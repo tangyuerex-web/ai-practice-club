@@ -110,6 +110,32 @@ button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px
   letter-spacing: .075em;
 }
 
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-toggle {
+  display: inline-flex;
+  min-width: 68px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1.5px solid var(--ink);
+  background: var(--accent);
+  cursor: pointer;
+  font-family: "SFMono-Regular", Consolas, "PingFang SC", monospace;
+  font-size: .76rem;
+  font-weight: 850;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+
+.language-toggle:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--ink); }
+.language-divider { opacity: .45; }
+
 .mark {
   display: grid;
   width: 40px;
@@ -475,7 +501,7 @@ textarea::placeholder, input::placeholder { color: #8a8c84; }
 .profile-card-footer { border-top: 1px solid #474a42; border-bottom: 0; }
 .profile-card-footer div { display: grid; }
 .profile-card-footer strong { font-size: clamp(.65rem, 2vw, .9rem); }
-.profile-card-footer img { width: clamp(44px, 10vw, 72px); aspect-ratio: 1; object-fit: cover; background: var(--white); }
+.profile-card-footer img { width: clamp(62px, 12vw, 88px); aspect-ratio: 1; object-fit: contain; background: var(--white); }
 .profile-motto { position: relative; z-index: 1; margin: 0; padding: 2% 4.2% 2.5%; border-top: 1px solid #474a42; font-family: monospace; font-size: clamp(.56rem, 1.65vw, .75rem); letter-spacing: .1em; }
 .profile-actions { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin: 28px 0 8px; }
 .secondary-button { padding: 13px 16px; background: transparent; }
@@ -516,7 +542,7 @@ fieldset { margin: 8px 0 18px; padding: 0; border: 0; }
 .welcome-copy h2 { margin: 8px 0; color: var(--accent); font-family: "Arial Black", Impact, sans-serif; font-size: clamp(2.5rem, 9vw, 5rem); letter-spacing: -.065em; line-height: .86; }
 .welcome-copy > p:last-child { color: #bfc1b8; }
 .join-qr-block { display: grid; grid-template-columns: minmax(130px, 220px) 1fr; gap: clamp(18px, 5vw, 36px); align-items: center; margin: 38px 0; padding: 20px; border: 1px solid #464940; }
-.join-qr-block img { display: block; width: 100%; background: var(--white); }
+.join-qr-block img { display: block; width: 100%; object-fit: contain; background: var(--white); }
 .join-qr-block div { display: grid; gap: 10px; }
 .join-qr-block strong { font-size: 1.15rem; }
 .join-qr-block span { color: var(--accent); font-family: monospace; }
@@ -550,6 +576,18 @@ fieldset { margin: 8px 0 18px; padding: 0; border: 0; }
   .join-qr-block img { max-width: 230px; margin: auto; }
   .join-qr-block div { text-align: center; }
 }
+
+html[lang="zh-CN"] body { font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", ui-sans-serif, sans-serif; }
+html[lang="zh-CN"] .hero-title,
+html[lang="zh-CN"] .section-heading h2,
+html[lang="zh-CN"] .profile-generation h2,
+html[lang="zh-CN"] .invitation > h2,
+html[lang="zh-CN"] .manifesto { letter-spacing: -.045em; line-height: .98; }
+html[lang="zh-CN"] .profile-identity h3 { letter-spacing: -.04em; line-height: .94; }
+html[lang="zh-CN"] .persona-description,
+html[lang="zh-CN"] .answer-text,
+html[lang="zh-CN"] .result-summary,
+html[lang="zh-CN"] .invitation-copy { word-break: break-word; line-height: 1.65; }
 
 @media (max-width: 380px) {
   .status-pill { padding: 6px 8px; font-size: .62rem; }
