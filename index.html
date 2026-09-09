@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f4ef">
+  <meta name="description" content="A two-minute AI experiment by AI Practice Club — 2026 founding members recruitment.">
+  <title>AI Practice Club — Recruitment Experiment</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#app">Skip to experiment</a>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <button class="wordmark" id="logoButton" type="button" aria-label="AI Practice Club home">
+      <span class="mark" aria-hidden="true">AI</span>
+      <span>AI PRACTICE CLUB</span>
+    </button>
+    <div class="status-pill"><span class="status-dot"></span><span id="headerStatus">SYSTEM READY</span></div>
+  </header>
+
+  <main id="app" class="app-shell" tabindex="-1">
+    <div class="progress-shell" id="progressShell" hidden>
+      <div class="progress-meta"><span id="levelText">LEVEL 01</span><span id="progressText">01 / 04</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <section class="screen start-screen is-active" data-screen="start" aria-labelledby="startTitle">
+      <div class="start-inner">
+        <div class="hero-label reveal">FOUNDING MEMBERS / 2026</div>
+        <h1 id="startTitle" class="hero-title reveal">
+          <span>AI PRACTICE</span>
+          <span>CLUB<span class="accent-dot">.</span></span>
+        </h1>
+        <p class="hero-question reveal">What could you build with AI?</p>
+
+        <div class="terminal reveal" aria-live="polite">
+          <div class="terminal-bar">
+            <span class="terminal-id">PROFILE_LAB.EXE</span>
+            <span class="terminal-signal">● LIVE</span>
+          </div>
+          <div class="terminal-line"><span class="prompt">›</span><span id="terminalText"></span><span class="cursor" aria-hidden="true"></span></div>
+        </div>
+
+        <button class="primary-button start-button" id="startButton" type="button" disabled>
+          <span>START EXPERIMENT</span><span aria-hidden="true">↗</span>
+        </button>
+        <p class="microcopy start-microcopy">Takes less than 2 minutes.</p>
+      </div>
+
+      <footer class="start-footer">
+        <span>AI Practice Club · 2026 Recruitment</span>
+        <span id="completionStat">43 students have completed the experiment.</span>
+      </footer>
+    </section>
+
+    <section class="screen" data-screen="persona" aria-labelledby="personaTitle">
+      <div class="section-heading">
+        <p class="eyebrow">CHOOSE A SIGNAL</p>
+        <h2 id="personaTitle">What would you do with AI?</h2>
+        <p>Pick the one that sounds most like you.</p>
+      </div>
+      <div class="persona-grid" id="personaGrid">
+        <button class="persona-card" type="button" data-persona="creator">
+          <span class="card-number">01</span><span class="persona-icon" aria-hidden="true">✦</span>
+          <strong>CREATOR</strong><span class="persona-description">I want to make things look better.</span>
+          <span class="tags">Design · Images · Video</span>
+        </button>
+        <button class="persona-card" type="button" data-persona="builder">
+          <span class="card-number">02</span><span class="persona-icon" aria-hidden="true">⌘</span>
+          <strong>BUILDER</strong><span class="persona-description">I want to build something that works.</span>
+          <span class="tags">Coding · Apps · Automation</span>
+        </button>
+        <button class="persona-card" type="button" data-persona="study">
+          <span class="card-number">03</span><span class="persona-icon" aria-hidden="true">↗</span>
+          <strong>STUDY HACKER</strong><span class="persona-description">I want to learn faster.</span>
+          <span class="tags">Research · Notes · Productivity</span>
+        </button>
+        <button class="persona-card" type="button" data-persona="analyst">
+          <span class="card-number">04</span><span class="persona-icon" aria-hidden="true">▥</span>
+          <strong>ANALYST</strong><span class="persona-description">I like turning information into answers.</span>
+          <span class="tags">Data · Business · Finance</span>
+        </button>
+        <button class="persona-card" type="button" data-persona="storyteller">
+          <span class="card-number">05</span><span class="persona-icon" aria-hidden="true">▶</span>
+          <strong>STORYTELLER</strong><span class="persona-description">I want to create content people remember.</span>
+          <span class="tags">Writing · Video · Media</span>
+        </button>
+        <button class="persona-card" type="button" data-persona="explorer">
+          <span class="card-number">06</span><span class="persona-icon" aria-hidden="true">?</span>
+          <strong>EXPLORER</strong><span class="persona-description">I have no idea. I just want to explore.</span>
+          <span class="tags">Curiosity · Experiments · Discovery</span>
+        </button>
+      </div>
+      <div class="signal-toast" id="signalToast" role="status">Profile signal detected.</div>
+    </section>
+
+    <section class="screen" data-screen="idea" aria-labelledby="ideaTitle">
+      <div class="section-heading compact-heading">
+        <p class="eyebrow">ONE IDEA</p>
+        <h2 id="ideaTitle">What would you build?</h2>
+        <p>Imagine AI could help you create anything. What would you try?</p>
+      </div>
+
+      <form id="ideaForm" class="idea-form">
+        <label for="ideaInput">YOUR EXPERIMENT</label>
+        <div class="textarea-shell">
+          <textarea id="ideaInput" maxlength="120" rows="5" required placeholder="e.g. An app that automatically organizes my homework..."></textarea>
+          <span class="character-count"><span id="charCount">0</span> / 120</span>
+        </div>
+        <button class="primary-button" type="submit"><span>BUILD IDEA</span><span aria-hidden="true">↗</span></button>
+      </form>
+
+      <div class="processing-panel" id="ideaProcessing" hidden aria-live="polite">
+        <div class="scan-orbit" aria-hidden="true"><span></span></div>
+        <p id="ideaProcessingText">Understanding idea...</p>
+        <div class="processing-bar"><span id="ideaProcessingBar"></span></div>
+      </div>
+
+      <div class="project-result" id="projectResult" hidden>
+        <div class="result-kicker"><span class="status-dot"></span>PROJECT DETECTED</div>
+        <h3 id="detectedProjectName">AI Project</h3>
+        <p class="result-summary" id="projectSummary"></p>
+        <p class="toolkit-label">POSSIBLE TOOLKIT</p>
+        <div class="toolkit-list" id="toolkitList"></div>
+        <div class="result-footer">
+          <div><span>DIFFICULTY</span><strong id="difficultyDots">●●○○○</strong></div>
+          <div><span>BUILDABLE?</span><strong>DEFINITELY.</strong></div>
+        </div>
+        <p class="encouragement">And you don't need to know how to code yet.</p>
+        <button class="primary-button" id="nextChallengeButton" type="button"><span>NEXT CHALLENGE</span><span aria-hidden="true">↗</span></button>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="quiz" aria-labelledby="quizTitle">
+      <div class="section-heading compact-heading">
+        <p class="eyebrow">TWO QUICK ROUNDS</p>
+        <h2 id="quizTitle">Human or AI?</h2>
+        <p>Think you can tell the difference?</p>
+      </div>
+
+      <div class="quiz-panel">
+        <div class="round-label"><span id="roundNumber">ROUND 01</span><span id="roundType">TEXT DETECTION</span></div>
+        <h3 id="quizQuestion">Which one was written by AI?</h3>
+        <div class="answer-grid" id="answerGrid"></div>
+        <div class="feedback-panel" id="quizFeedback" hidden aria-live="polite">
+          <strong id="feedbackTitle">CORRECT</strong>
+          <p id="feedbackText"></p>
+          <button class="primary-button" id="quizNextButton" type="button"><span>NEXT ROUND</span><span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="profile" aria-labelledby="profilePageTitle">
+      <div class="profile-generation" id="profileGeneration" aria-live="polite">
+        <div class="radar" aria-hidden="true"><span></span><i></i></div>
+        <p class="eyebrow">PROFILE ENGINE</p>
+        <h2 id="profilePageTitle">Generating profile...</h2>
+        <p id="profileGenerationText">Reading choices...</p>
+      </div>
+
+      <div class="profile-content" id="profileContent" hidden>
+        <div class="section-heading profile-heading">
+          <p class="eyebrow">EXPERIMENT COMPLETE</p>
+          <h2>Your AI profile is ready.</h2>
+          <p>Built from the choices you made — not a personality diagnosis.</p>
+        </div>
+
+        <article class="profile-card" id="profileCard">
+          <div class="profile-card-header">
+            <span>AI PRACTICE CLUB</span><span>PROFILE / 2026</span>
+          </div>
+          <div class="profile-identity">
+            <p>YOUR AI PROFILE</p>
+            <h3 id="profileName">THE ANALYST</h3>
+            <div class="profile-traits" id="profileTraits">Curious · Logical · Experimental</div>
+          </div>
+          <div class="profile-strength">
+            <span>YOUR AI STRENGTH</span>
+            <strong id="profileStrength">Turning information into decisions.</strong>
+          </div>
+          <div class="profile-next">
+            <span>YOUR NEXT SKILL</span>
+            <strong>Build AI tools instead of only using them.</strong>
+          </div>
+          <div class="profile-project">
+            <span>RECOMMENDED PROJECT</span>
+            <h4 id="profileProject">AI Research Assistant</h4>
+            <p id="profileCreateLabel">Create with:</p>
+            <div class="profile-tags" id="profileProjectTags"></div>
+          </div>
+          <div class="profile-card-footer">
+            <div><span>AI LEVEL</span><strong>LV. 01 — EXPLORER</strong></div>
+            <img src="./assets/wechat-qr.png" alt="AI Practice Club WeChat group QR code">
+          </div>
+          <p class="profile-motto">DON'T JUST USE AI. BUILD WITH IT.</p>
+        </article>
+
+        <div class="profile-actions">
+          <button class="secondary-button" id="saveProfileButton" type="button">↓ SAVE MY PROFILE</button>
+          <button class="secondary-button" id="shareProfileButton" type="button">↗ SHARE WITH A FRIEND</button>
+        </div>
+        <p class="action-note" id="actionNote" aria-live="polite"></p>
+
+        <section class="invitation" aria-labelledby="invitationTitle">
+          <p class="eyebrow">THE NEXT LEVEL</p>
+          <h2 id="invitationTitle">Maybe this starts here.</h2>
+          <p class="invitation-copy">AI Practice Club isn't about sitting in a classroom listening to lectures.</p>
+          <div class="manifesto"><span>WE EXPERIMENT.</span><span>WE BUILD.</span><span>WE LEARN BY DOING.</span></div>
+
+          <div class="workshop-card">
+            <span>FIRST WORKSHOP</span>
+            <h3>Build Something With AI</h3>
+            <p>No coding experience required.<br>No AI experience required.<br>Just bring an idea.</p>
+          </div>
+
+          <div class="club-pillars">
+            <div><span>01</span><strong>Learn</strong><p>Understand useful AI tools.</p></div>
+            <div><span>02</span><strong>Build</strong><p>Create real mini-projects.</p></div>
+            <div><span>03</span><strong>Share</strong><p>Turn ideas into something others can see.</p></div>
+          </div>
+
+          <button class="primary-button join-button" id="joinButton" type="button"><span>JOIN AI PRACTICE CLUB</span><span aria-hidden="true">↗</span></button>
+          <p class="founding-note">Founding Members Recruitment · Limited places for the first workshop.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="signup" aria-labelledby="signupTitle">
+      <div class="signup-layout">
+        <div class="section-heading compact-heading">
+          <p class="eyebrow">FOUNDING MEMBER APPLICATION</p>
+          <h2 id="signupTitle">You're in.</h2>
+          <p>Tell us a little about you.</p>
+        </div>
+
+        <form class="signup-form" id="signupForm">
+          <div class="field-row">
+            <div class="field"><label for="studentName">NAME</label><input id="studentName" name="name" autocomplete="name" required placeholder="Your name"></div>
+            <div class="field"><label for="studentGrade">GRADE</label><input id="studentGrade" name="grade" required placeholder="e.g. Grade 10"></div>
+          </div>
+          <div class="field"><label for="studentWechat">WECHAT</label><input id="studentWechat" name="wechat" required placeholder="Your WeChat ID"></div>
+          <fieldset>
+            <legend>WHAT INTERESTS YOU MOST?</legend>
+            <div class="interest-grid" id="interestGrid">
+              <label><input type="checkbox" name="interests" value="AI Tools"><span>AI Tools</span></label>
+              <label><input type="checkbox" name="interests" value="Coding"><span>Coding</span></label>
+              <label><input type="checkbox" name="interests" value="Design"><span>Design</span></label>
+              <label><input type="checkbox" name="interests" value="Business"><span>Business</span></label>
+              <label><input type="checkbox" name="interests" value="Research"><span>Research</span></label>
+              <label><input type="checkbox" name="interests" value="Productivity"><span>Productivity</span></label>
+              <label><input type="checkbox" name="interests" value="Just exploring"><span>Just exploring</span></label>
+            </div>
+          </fieldset>
+          <p class="privacy-note">Static site note: this form only remembers your details on this device. Scan the QR code after submitting to complete your real sign-up.</p>
+          <button class="primary-button" type="submit"><span>SUBMIT</span><span aria-hidden="true">↗</span></button>
+        </form>
+
+        <div class="welcome-panel" id="welcomePanel" hidden>
+          <div class="welcome-copy">
+            <p class="eyebrow">ACCESS GRANTED</p>
+            <h2>WELCOME TO<br>AI PRACTICE CLUB</h2>
+            <p>Your experiment starts here.</p>
+          </div>
+          <div class="join-qr-block">
+            <img src="./assets/wechat-qr.png" alt="Scan to join the AI Practice Club WeChat group">
+            <div><strong>Scan to join the group</strong><span>WeChat: 1120091123</span><small>See you at the first workshop.</small></div>
+          </div>
+          <button class="secondary-button" id="restartButton" type="button">↺ TRY AGAIN</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="easter-egg" id="easterEgg" hidden role="dialog" aria-modal="true" aria-labelledby="easterTitle">
+    <div class="easter-card">
+      <button class="close-button" id="closeEasterEgg" type="button" aria-label="Close">×</button>
+      <p class="eyebrow">TERMINAL OVERRIDE</p>
+      <h2 id="easterTitle">ADMIN MODE DETECTED.</h2>
+      <div class="easter-terminal"><span>› Just kidding.</span><span>› You haven't joined the club yet.</span></div>
+      <button class="primary-button" id="fixThatButton" type="button"><span>FIX THAT</span><span aria-hidden="true">↗</span></button>
+    </div>
+  </div>
+
+  <canvas id="profileCanvas" width="1080" height="1350" hidden></canvas>
+  <script src="./app.js" defer></script>
+</body>
+</html>
