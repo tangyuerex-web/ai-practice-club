@@ -1,122 +1,112 @@
-# AI Practice Club 招新互动网页
+# Personal Site Builder
 
-这是一个完全静态的 GitHub Pages 网站，不需要服务器、数据库或安装任何开发工具。
+一个适合 GitHub Pages 的纯静态个人网页生成器。
 
-## 已配置的信息
+核心结构：
 
-- 社团微信号：`1120091123`
-- 微信群二维码：`assets/wechat-qr.jpg`
-- 默认语言：英文；网页右上角可切换为完整中文界面
-- 判断小游戏：10 题题库，每次随机抽取 2 道且不重复
-- 招新年份：2026
+- `index.html`：可视化 Builder 和实时预览
+- `profile.html?id=AB12`：所有用户共用的个人网页模板入口
+- `styles.css`：Builder、三套个人模板和响应式样式
+- `app.js`：表单、中英文切换、随机模板、唯一 ID、10 秒生成进度和发布逻辑
+- `profile.js`：根据 URL 中的 ID 获取数据、动态渲染并切换界面语言
+- `config.js`：Supabase 项目地址和 publishable key
+- `supabase.sql`：数据库表和 Row Level Security 规则
 
-> 报名表的姓名、年级、微信号只保存在填写者当前浏览器的本地存储中，不会发送给社长。真正的报名动作是提交后扫码进入微信群。这是纯静态网站的正常限制，也避免了虚假的“已上传”提示。
+## 1. 创建 Supabase 数据库
 
-## 方法 A：直接用 GitHub 网页上传（推荐）
+1. 打开 [Supabase](https://supabase.com/) 并创建一个免费项目。
+2. 进入项目的 **SQL Editor**。
+3. 打开本项目的 `supabase.sql`，复制全部内容并运行。
+4. 进入 **Project Settings → API**。
+5. 记录以下两项：
+   - Project URL
+   - Publishable key（旧项目也可以使用 legacy anon key）
 
-### 第 1 步：解压网站文件
+不要把 `service_role` key 放进网页。
 
-1. 下载 `AI-Practice-Club-GitHub-Pages.zip`。
-2. 在 Windows 中右键压缩包，选择“全部解压”。
-3. 打开解压后的文件夹，确认第一层能直接看到：
-   - `index.html`
-   - `styles.css`
-   - `app.js`
-   - `assets` 文件夹
-   - `README.md`
+## 2. 填写网页配置
 
-### 第 2 步：创建 GitHub 仓库
-
-1. 登录 [GitHub](https://github.com/)。
-2. 点击右上角 `+`，选择 **New repository**。
-3. Repository name 填写：`ai-practice-club`。
-4. 选择 **Public**。GitHub Free 的 Pages 使用 Public 最简单。
-5. 不需要勾选 “Add a README file”，然后点击 **Create repository**。
-
-### 第 3 步：上传网页文件
-
-1. 在新仓库页面点击 **uploading an existing file**；如果没看到，点击 **Add file → Upload files**。
-2. 把解压文件夹里面的全部内容拖进上传框。
-3. 特别检查：`index.html` 必须位于仓库最外层，不能再套一层文件夹。
-4. 页面底部 Commit message 可以写：`Publish club recruitment website`。
-5. 点击 **Commit changes**。
-
-### 第 4 步：开启 GitHub Pages
-
-1. 进入仓库上方的 **Settings**。
-2. 左侧菜单点击 **Pages**。
-3. 在 **Build and deployment** 下：
-   - Source 选择 **Deploy from a branch**
-   - Branch 选择 **main**
-   - Folder 选择 **/ (root)**
-4. 点击 **Save**。
-5. 等待约 1–3 分钟，然后刷新 Pages 设置页。
-
-你的网址通常是：
-
-```text
-https://你的GitHub用户名.github.io/ai-practice-club/
-```
-
-例如用户名是 `rex123`，网址就是：
-
-```text
-https://rex123.github.io/ai-practice-club/
-```
-
-### 第 5 步：手机检查
-
-1. 在手机浏览器打开上面的网址。
-2. 从 START 开始完整玩一遍。
-3. 检查画像下载、分享按钮、报名提交和微信群二维码。
-4. 把最终网址做成海报二维码；不要把压缩包或 GitHub 仓库网址做成二维码。
-
-## 以后如何更新
-
-1. 在电脑上修改相应文件。
-2. 回到 GitHub 仓库，点击 **Add file → Upload files**。
-3. 重新上传同名文件并提交，GitHub 会提示替换。
-4. 等待约 1–3 分钟，刷新网页。若仍显示旧版，可使用无痕窗口或强制刷新。
-
-## 最常改的两个地方
-
-### 更换微信号
-
-打开 `app.js`，在最上方找到：
+打开 `config.js`：
 
 ```js
-const CLUB_WECHAT = "1120091123";
+window.PROFILE_BUILDER_CONFIG = {
+  SUPABASE_URL: "https://你的项目.supabase.co",
+  SUPABASE_PUBLISHABLE_KEY: "你的 publishable key"
+};
 ```
 
-只修改引号中的数字或微信号。
+Publishable key 可以在前端使用；数据库权限由 `supabase.sql` 中的 RLS 规则控制。当前规则只允许匿名用户创建和读取公开个人网页，不允许修改或删除。绝对不要填写 `service_role` key。
 
-### 更换微信群二维码
+## 3. 本地检查
 
-准备一张新的 JPG 图片，把它命名为：
+不要直接双击 HTML 文件。建议在此目录运行：
+
+```bash
+python3 -m http.server 8080
+```
+
+然后访问：
 
 ```text
-wechat-qr.jpg
+http://localhost:8080/
 ```
 
-然后替换 `assets/wechat-qr.jpg`。保持文件名完全一致，网页代码不用修改。
+如果还没填写 Supabase 配置，系统会使用 `localStorage` 演示完整流程，但生成的链接只能在当前设备打开。
 
-## 常见问题
+## 4. 上传到现有 GitHub Pages
 
-### 打开网址显示 404
+如果你的仓库是 `ai-practice-club`，建议把整个目录放到：
 
-- 确认 Pages 的分支是 `main`，文件夹是 `/ (root)`。
-- 确认 `index.html` 在仓库最外层。
-- 刚开启 Pages 时等待 1–3 分钟再刷新。
+```text
+ai-practice-club/profile-builder/
+```
 
-### 页面有文字，但二维码不显示
+然后提交并推送：
 
-- 确认仓库中存在 `assets/wechat-qr.jpg`。
-- 注意 GitHub 区分大小写，`Assets` 和 `assets` 不是同一个文件夹。
+```bash
+git add profile-builder
+git commit -m "Add personal site builder"
+git push
+```
 
-### 报名信息在哪里查看
+如果仓库已经启用 GitHub Pages，发布地址会是：
 
-这个版本没有后端，因此不能在社长电脑统一查看报名表数据。学生提交后会看到二维码并扫码进群。若以后需要集中收集报名信息，可以把按钮改为腾讯文档、问卷星或金数据链接，同时继续保留当前小游戏。
+```text
+https://tangyuerex-web.github.io/ai-practice-club/profile-builder/
+```
 
-### 是否需要购买域名
+生成后的个人链接示例：
 
-不需要。GitHub Pages 会免费提供 `github.io` 网址。以后想使用自己的域名，也可以在 Pages 设置中添加。
+```text
+https://tangyuerex-web.github.io/ai-practice-club/profile-builder/profile.html?id=AB12
+```
+
+如果还没启用 Pages：进入仓库 **Settings → Pages**，在 **Build and deployment** 中选择 **Deploy from a branch**，再选择 `main` 和 `/root`。
+
+## 5. 跨设备验证
+
+1. 在 Builder 填写内容并点击 **Publish My Website**。
+2. 等待约 10 秒，复制生成的网址。
+3. 用手机流量或另一台设备打开该网址。
+4. 确认姓名、标题、颜色、随机模板和互动功能一致。
+
+## 中英文切换
+
+- Builder 和最终个人网页右上角都提供 `EN / 中文` 切换。
+- 每次新打开页面时默认显示英文，不读取或保存上一次语言选择。
+- 切换到中文后，导航、字段、预览、生成进度、结果弹窗、错误提示和个人模板界面都会完整切换。
+- 用户自己填写的姓名、标题、介绍和隐藏留言不会被自动翻译；只有尚未修改的示例内容会跟随语言切换。
+
+## 三套随机模板
+
+- `orbit`：浅色圆形轨道视觉
+- `blueprint`：深色网格开发者视觉
+- `studio`：高对比双栏海报视觉
+
+发布时会从三套模板中随机选择，并在同一浏览器连续发布时避免立刻重复上一套模板。模板编号会保存到数据库，因此同一链接每次打开都会保持一致。
+
+## 上线前注意
+
+- 当前是公开生成器，匿名用户可以创建公开页面。正式大规模使用前，建议在 Supabase 中增加验证码、频率限制或定期清理旧记录。
+- 四位 ID 使用排除了 `0/O/1/I` 的字符集，共有 1,048,576 种组合；数据库主键会阻止重复，前端遇到冲突会自动重新生成。
+- 不要在个人介绍或隐藏留言中填写手机号、住址等敏感信息。
