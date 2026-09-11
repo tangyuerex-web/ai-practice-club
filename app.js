@@ -21,6 +21,12 @@
   const copyUrlButton = $("#copy-url");
   const demoWarning = $("#demo-warning");
   const formError = $("#form-error");
+  const wizardSteps = $$(".wizard-step");
+  const wizardBack = $("#wizard-back");
+  const wizardNext = $("#wizard-next");
+  const wizardProgressBar = $("#wizard-progress-bar");
+  const wizardStepCount = $("#wizard-step-count");
+  const wizardStepName = $("#wizard-step-name");
   const config = window.PROFILE_BUILDER_CONFIG || {};
   const apiKey = config.SUPABASE_PUBLISHABLE_KEY || config.SUPABASE_ANON_KEY || "";
 
@@ -34,13 +40,26 @@
       clubName: "AI Practice Club",
       githubReady: "GitHub Pages Ready",
       eyebrow: "BUILD YOUR SPACE",
-      heroTitle: "Turn your information into a real website.",
-      heroIntro: "No coding needed. Shape the content and color, then watch your page come alive.",
-      identityTitle: "Make it yours",
-      identityIntro: "Create your identity directly on the canvas.",
+      heroTitle: "Build your website, one choice at a time.",
+      heroIntro: "Four short steps. Your page changes with every answer.",
+      wizardProgressAria: "Builder progress",
+      stepCount: "STEP %1 / %2",
+      stepIdentity: "Your identity",
+      stepExpression: "Your expression",
+      stepInteraction: "Your interaction",
+      stepReview: "Ready to publish",
+      questionOne: "QUESTION 1–2",
+      questionThreeFour: "QUESTION 3–4",
+      questionFive: "QUESTION 5",
+      finalStep: "FINAL STEP",
+      identityTitle: "Who is this page about?",
+      identityIntro: "Give your page a name and a title.",
+      identityTip: "Try a title that says what you make, explore, or care about.",
       nameLabel: "Name",
       titleLabel: "Personal title",
       bioLabel: "One-line introduction",
+      expressionTitle: "What should your page feel like?",
+      expressionIntro: "Write one line, then choose its visual energy.",
       colorTitle: "Choose your energy",
       colorIntro: "Pick a color to reshape the whole visual system.",
       themeColorAria: "Theme color",
@@ -51,8 +70,8 @@
       customColorAria: "Custom color",
       customColor: "CUSTOM",
       activeColor: "ACTIVE COLOR",
-      interactionTitle: "Add one interaction",
-      interactionIntro: "Give visitors something they can try instantly.",
+      interactionTitle: "How should visitors interact?",
+      interactionIntro: "Choose one small effect that gives your page personality.",
       interactionAria: "Interactive feature",
       glowTitle: "Cursor glow",
       glowIntro: "A soft glow follows the pointer",
@@ -60,10 +79,15 @@
       confettiIntro: "Clicks release colorful fragments",
       revealTitle: "Hidden message",
       revealIntro: "A button reveals one personal detail",
-      secretLabel: "Hidden message",
+      secretLabel: "What should the hidden message say?",
+      reviewTitle: "Ready to make it real?",
+      reviewIntro: "Check the essentials. Your final layout is still a surprise.",
+      reviewProfile: "PROFILE",
       templateTitle: "3 templates, chosen at random",
-      templateIntro: "Every publish brings a different layout possibility.",
+      templateIntro: "The layout is revealed after the ten-second build.",
       publish: "Publish My Website",
+      back: "Back",
+      continue: "Continue",
       previewAria: "Live personal site preview",
       livePreview: "LIVE PREVIEW",
       previewSizeAria: "Preview size",
@@ -73,7 +97,7 @@
       hello: "HELLO, I AM",
       explore: "Explore my world",
       madeWith: "MADE WITH AI PRACTICE CLUB",
-      previewCaption: "Your final template will be revealed when you publish.",
+      previewCaption: "Every choice updates this preview.",
       constructing: "AI is constructing your website",
       progressAria: "Website construction progress",
       aboutTenSeconds: "About 10 seconds",
@@ -111,13 +135,26 @@
       clubName: "人工智能实践社",
       githubReady: "适配静态网页托管",
       eyebrow: "创建你的空间",
-      heroTitle: "把你的信息，变成一个真正的网址。",
-      heroIntro: "无需编写代码。调整内容与颜色，个人主页会立即呈现在你眼前。",
-      identityTitle: "你的页面主角",
-      identityIntro: "直接在画面里塑造你的身份。",
+      heroTitle: "一步一个选择，创建你的个人网页。",
+      heroIntro: "只需四个简短步骤，每次回答都会改变你的页面。",
+      wizardProgressAria: "网页创建进度",
+      stepCount: "第 %1 步，共 %2 步",
+      stepIdentity: "你的身份",
+      stepExpression: "你的表达",
+      stepInteraction: "你的互动",
+      stepReview: "准备发布",
+      questionOne: "问题一至二",
+      questionThreeFour: "问题三至四",
+      questionFive: "问题五",
+      finalStep: "最后一步",
+      identityTitle: "这个页面的主角是谁？",
+      identityIntro: "给你的页面一个名字和个人标题。",
+      identityTip: "个人标题可以说明你喜欢创作、探索或关注什么。",
       nameLabel: "名字",
       titleLabel: "个人标题",
       bioLabel: "一句话介绍",
+      expressionTitle: "你希望页面给人什么感觉？",
+      expressionIntro: "先写一句介绍，再选择页面的视觉能量。",
       colorTitle: "选择页面能量",
       colorIntro: "点选颜色，实时改变整个视觉系统。",
       themeColorAria: "主题颜色",
@@ -128,8 +165,8 @@
       customColorAria: "自定义颜色",
       customColor: "自定义",
       activeColor: "当前颜色",
-      interactionTitle: "加入一个互动",
-      interactionIntro: "让访客打开页面后可以直接体验。",
+      interactionTitle: "你希望访客怎样与页面互动？",
+      interactionIntro: "选择一个小效果，让页面更有自己的性格。",
       interactionAria: "互动功能",
       glowTitle: "光点跟随",
       glowIntro: "指针经过时产生柔和光晕",
@@ -137,10 +174,15 @@
       confettiIntro: "点击页面释放主题色碎片",
       revealTitle: "隐藏留言",
       revealIntro: "点击按钮揭晓一条个人信息",
-      secretLabel: "隐藏留言",
+      secretLabel: "隐藏留言想写什么？",
+      reviewTitle: "准备好把它变成真正的网页了吗？",
+      reviewIntro: "检查主要信息，最终版式仍会保留惊喜。",
+      reviewProfile: "个人主页",
       templateTitle: "三套模板随机生成",
-      templateIntro: "每次发布都会得到不同的版式可能。",
+      templateIntro: "十秒构建完成后，最终版式才会揭晓。",
       publish: "发布我的网页",
+      back: "返回",
+      continue: "继续",
       previewAria: "个人网页实时预览",
       livePreview: "实时预览",
       previewSizeAria: "预览尺寸",
@@ -150,7 +192,7 @@
       hello: "你好，我是",
       explore: "了解我的世界",
       madeWith: "由人工智能实践社制作",
-      previewCaption: "最终模板会在发布时随机揭晓。",
+      previewCaption: "每个选择都会立即更新预览。",
       constructing: "人工智能正在构建你的网页",
       progressAria: "网页生成进度",
       aboutTenSeconds: "大约十秒",
@@ -190,6 +232,8 @@
   let accent = "#C7FF43";
   let publishing = false;
   let language = "en";
+  let currentStep = 0;
+  const stepNameKeys = ["stepIdentity", "stepExpression", "stepInteraction", "stepReview"];
 
   function t(key) {
     return translations[language][key] || translations.en[key] || key;
@@ -223,6 +267,8 @@
     progressStep.textContent = t("stepReading");
     if (!resultDialog.open) copyUrlButton.textContent = t("copyUrl");
     updatePreview();
+    updateReview();
+    updateWizardUi();
   }
 
   function initials(value) {
@@ -241,6 +287,70 @@
     bioCount.value = `${bioInput.value.length} / 180`;
   }
 
+  function interactionName() {
+    const keys = { glow: "glowTitle", confetti: "confettiTitle", reveal: "revealTitle" };
+    return t(keys[selectedInteraction()] || "glowTitle");
+  }
+
+  function updateReview() {
+    const name = nameInput.value.trim() || t("fallbackName");
+    $("#review-name").textContent = name;
+    $("#review-title").textContent = titleInput.value.trim() || t("fallbackTitle");
+    $("#review-initials").textContent = initials(name);
+    $("#review-color").style.background = accent;
+    $("#review-interaction").textContent = interactionName();
+  }
+
+  function updateWizardUi() {
+    const current = currentStep + 1;
+    const total = wizardSteps.length;
+    wizardStepCount.textContent = t("stepCount")
+      .replace("%1", String(current).padStart(2, "0"))
+      .replace("%2", String(total).padStart(2, "0"));
+    wizardStepName.textContent = t(stepNameKeys[currentStep]);
+    wizardProgressBar.style.width = `${(current / total) * 100}%`;
+    $(".wizard-progress").setAttribute("aria-valuenow", String(current));
+    wizardBack.hidden = currentStep === 0;
+    wizardNext.hidden = currentStep === total - 1;
+    $$(".wizard-dots i").forEach((dot, index) => {
+      dot.classList.toggle("active", index <= currentStep);
+    });
+  }
+
+  function pulsePreview() {
+    preview.classList.remove("preview-pulse");
+    requestAnimationFrame(() => preview.classList.add("preview-pulse"));
+  }
+
+  function validateCurrentStep() {
+    const controls = $$("input, textarea", wizardSteps[currentStep]);
+    const invalid = controls.find((control) => !control.checkValidity());
+    if (!invalid) return true;
+    invalid.reportValidity();
+    return false;
+  }
+
+  function goToStep(nextStep) {
+    const target = Math.max(0, Math.min(wizardSteps.length - 1, nextStep));
+    if (target === currentStep) return;
+    const movingBack = target < currentStep;
+    const previous = wizardSteps[currentStep];
+    previous.classList.remove("active", "from-forward", "from-back");
+    previous.hidden = true;
+    currentStep = target;
+    const next = wizardSteps[currentStep];
+    next.hidden = false;
+    next.classList.remove("active", "from-forward", "from-back");
+    void next.offsetWidth;
+    next.classList.add("active", movingBack ? "from-back" : "from-forward");
+    updateReview();
+    updateWizardUi();
+    pulsePreview();
+    if (window.innerWidth <= 1050) {
+      $(".wizard-progress").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   function setAccent(color, sourceButton = null) {
     accent = color.toUpperCase();
     document.documentElement.style.setProperty("--accent", accent);
@@ -251,6 +361,8 @@
       button.classList.toggle("active", active);
       button.setAttribute("aria-pressed", String(active));
     });
+    updateReview();
+    pulsePreview();
   }
 
   function selectedInteraction() {
@@ -262,6 +374,7 @@
       card.classList.toggle("active", $("input", card).checked);
     });
     $("#secret-field").hidden = selectedInteraction() !== "reveal";
+    updateReview();
   }
 
   function chooseTemplate() {
@@ -371,7 +484,13 @@
     event.preventDefault();
     if (publishing) return;
     formError.hidden = true;
-    if (!form.reportValidity()) return;
+    if (!form.checkValidity()) {
+      const invalid = $(":invalid", form);
+      const invalidStep = invalid?.closest(".wizard-step");
+      if (invalidStep) goToStep(Number(invalidStep.dataset.step));
+      setTimeout(() => invalid?.reportValidity(), 180);
+      return;
+    }
 
     publishing = true;
     overlay.hidden = false;
@@ -411,7 +530,10 @@
     }
   }
 
-  [nameInput, titleInput, bioInput].forEach((input) => input.addEventListener("input", updatePreview));
+  [nameInput, titleInput, bioInput].forEach((input) => input.addEventListener("input", () => {
+    updatePreview();
+    updateReview();
+  }));
   $$(".color-orb").forEach((button) => button.addEventListener("click", () => setAccent(button.dataset.color, button)));
   $("#custom-color").addEventListener("input", (event) => setAccent(event.target.value));
   $$("input[name='interaction']").forEach((radio) => radio.addEventListener("change", updateInteractionCards));
@@ -423,7 +545,18 @@
         item.setAttribute("aria-pressed", String(active));
       });
       preview.classList.toggle("mobile", button.dataset.device === "mobile");
+      pulsePreview();
     });
+  });
+  wizardNext.addEventListener("click", () => {
+    if (validateCurrentStep()) goToStep(currentStep + 1);
+  });
+  wizardBack.addEventListener("click", () => goToStep(currentStep - 1));
+  form.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && event.target.tagName !== "TEXTAREA" && currentStep < wizardSteps.length - 1) {
+      event.preventDefault();
+      wizardNext.click();
+    }
   });
   form.addEventListener("submit", publish);
   $$(".language-switch button").forEach((button) => {

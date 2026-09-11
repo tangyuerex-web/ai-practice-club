@@ -25,104 +25,152 @@
       </div>
     </header>
 
-    <main class="builder-shell">
-      <section class="control-panel" aria-labelledby="builder-title">
+    <main class="builder-shell wizard-shell">
+      <section class="control-panel wizard-panel" aria-labelledby="builder-title">
         <div class="eyebrow" data-i18n="eyebrow">BUILD YOUR SPACE</div>
-        <h1 id="builder-title" data-i18n="heroTitle">Turn your information into a real website.</h1>
-        <p class="intro" data-i18n="heroIntro">No coding needed. Shape the content and color, then watch your page come alive.</p>
+        <h1 id="builder-title" data-i18n="heroTitle">Build your website, one choice at a time.</h1>
+        <p class="intro" data-i18n="heroIntro">Four short steps. Your page changes with every answer.</p>
+
+        <div class="wizard-progress" role="progressbar" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1" aria-label="Builder progress" data-i18n-aria="wizardProgressAria">
+          <div class="wizard-progress-copy">
+            <span id="wizard-step-count">STEP 01 / 04</span>
+            <strong id="wizard-step-name">Your identity</strong>
+          </div>
+          <div class="wizard-progress-track"><i id="wizard-progress-bar"></i></div>
+        </div>
 
         <form id="builder-form" novalidate>
-          <section class="control-section identity-section">
-            <div class="section-heading">
-              <span class="section-number">01</span>
-              <div>
-                <h2 data-i18n="identityTitle">Make it yours</h2>
-                <p data-i18n="identityIntro">Create your identity directly on the canvas.</p>
+          <div class="wizard-viewport">
+            <section class="control-section wizard-step active" data-step="0">
+              <div class="section-heading">
+                <span class="section-number">01</span>
+                <div>
+                  <span class="question-label" data-i18n="questionOne">QUESTION 1–2</span>
+                  <h2 data-i18n="identityTitle">Who is this page about?</h2>
+                  <p data-i18n="identityIntro">Give your page a name and a title.</p>
+                </div>
               </div>
-            </div>
-            <div class="floating-fields">
-              <label class="floating-field">
-                <input id="name" name="name" type="text" maxlength="32" value="Rex" required />
-                <span data-i18n="nameLabel">Name</span>
-              </label>
-              <label class="floating-field">
-                <input id="title" name="title" type="text" maxlength="48" value="Student Builder" required />
-                <span data-i18n="titleLabel">Personal title</span>
-              </label>
-            </div>
-            <label class="bio-field">
-              <span data-i18n="bioLabel">One-line introduction</span>
-              <textarea id="bio" name="bio" maxlength="180" rows="3" required>Turning ideas into things that actually work.</textarea>
-              <output id="bio-count" for="bio">44 / 180</output>
-            </label>
-          </section>
+              <div class="floating-fields">
+                <label class="floating-field">
+                  <input id="name" name="name" type="text" maxlength="32" value="Rex" required />
+                  <span data-i18n="nameLabel">Name</span>
+                </label>
+                <label class="floating-field">
+                  <input id="title" name="title" type="text" maxlength="48" value="Student Builder" required />
+                  <span data-i18n="titleLabel">Personal title</span>
+                </label>
+              </div>
+              <div class="step-tip"><span aria-hidden="true">↗</span><p data-i18n="identityTip">Try a title that says what you make, explore, or care about.</p></div>
+            </section>
 
-          <section class="control-section color-section">
-            <div class="section-heading">
-              <span class="section-number">02</span>
-              <div>
-                <h2 data-i18n="colorTitle">Choose your energy</h2>
-                <p data-i18n="colorIntro">Pick a color to reshape the whole visual system.</p>
+            <section class="control-section wizard-step" data-step="1" hidden>
+              <div class="section-heading">
+                <span class="section-number">02</span>
+                <div>
+                  <span class="question-label" data-i18n="questionThreeFour">QUESTION 3–4</span>
+                  <h2 data-i18n="expressionTitle">What should your page feel like?</h2>
+                  <p data-i18n="expressionIntro">Write one line, then choose its visual energy.</p>
+                </div>
               </div>
-            </div>
-            <div class="palette-stage" role="group" aria-label="Theme color" data-i18n-aria="themeColorAria">
-              <button class="color-orb active" type="button" data-color="#C7FF43" style="--orb:#C7FF43" aria-label="Electric lime" data-i18n-aria="limeAria" aria-pressed="true"></button>
-              <button class="color-orb" type="button" data-color="#3975FF" style="--orb:#3975FF" aria-label="Cobalt blue" data-i18n-aria="blueAria" aria-pressed="false"></button>
-              <button class="color-orb" type="button" data-color="#FF5B35" style="--orb:#FF5B35" aria-label="Bright orange" data-i18n-aria="orangeAria" aria-pressed="false"></button>
-              <button class="color-orb" type="button" data-color="#FF4DA6" style="--orb:#FF4DA6" aria-label="Bright pink" data-i18n-aria="pinkAria" aria-pressed="false"></button>
-              <label class="custom-color">
-                <input id="custom-color" type="color" value="#C7FF43" aria-label="Custom color" data-i18n-aria="customColorAria" />
-                <span data-i18n="customColor">CUSTOM</span>
+              <label class="bio-field">
+                <span data-i18n="bioLabel">One-line introduction</span>
+                <textarea id="bio" name="bio" maxlength="180" rows="3" required>Turning ideas into things that actually work.</textarea>
+                <output id="bio-count" for="bio">44 / 180</output>
               </label>
-              <div class="color-readout">
-                <span data-i18n="activeColor">ACTIVE COLOR</span>
-                <strong id="color-value">#C7FF43</strong>
+              <div class="palette-stage" role="group" aria-label="Theme color" data-i18n-aria="themeColorAria">
+                <button class="color-orb active" type="button" data-color="#C7FF43" style="--orb:#C7FF43" aria-label="Electric lime" data-i18n-aria="limeAria" aria-pressed="true"></button>
+                <button class="color-orb" type="button" data-color="#3975FF" style="--orb:#3975FF" aria-label="Cobalt blue" data-i18n-aria="blueAria" aria-pressed="false"></button>
+                <button class="color-orb" type="button" data-color="#FF5B35" style="--orb:#FF5B35" aria-label="Bright orange" data-i18n-aria="orangeAria" aria-pressed="false"></button>
+                <button class="color-orb" type="button" data-color="#FF4DA6" style="--orb:#FF4DA6" aria-label="Bright pink" data-i18n-aria="pinkAria" aria-pressed="false"></button>
+                <label class="custom-color">
+                  <input id="custom-color" type="color" value="#C7FF43" aria-label="Custom color" data-i18n-aria="customColorAria" />
+                  <span data-i18n="customColor">CUSTOM</span>
+                </label>
+                <div class="color-readout">
+                  <span data-i18n="activeColor">ACTIVE COLOR</span>
+                  <strong id="color-value">#C7FF43</strong>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
 
-          <section class="control-section interaction-section">
-            <div class="section-heading">
-              <span class="section-number">03</span>
-              <div>
-                <h2 data-i18n="interactionTitle">Add one interaction</h2>
-                <p data-i18n="interactionIntro">Give visitors something they can try instantly.</p>
+            <section class="control-section wizard-step" data-step="2" hidden>
+              <div class="section-heading">
+                <span class="section-number">03</span>
+                <div>
+                  <span class="question-label" data-i18n="questionFive">QUESTION 5</span>
+                  <h2 data-i18n="interactionTitle">How should visitors interact?</h2>
+                  <p data-i18n="interactionIntro">Choose one small effect that gives your page personality.</p>
+                </div>
               </div>
-            </div>
-            <div class="interaction-cards" role="radiogroup" aria-label="Interactive feature" data-i18n-aria="interactionAria">
-              <label class="interaction-card active">
-                <input type="radio" name="interaction" value="glow" checked />
-                <span class="interaction-icon glow-icon" aria-hidden="true"></span>
-                <strong data-i18n="glowTitle">Cursor glow</strong>
-                <small data-i18n="glowIntro">A soft glow follows the pointer</small>
+              <div class="interaction-cards" role="radiogroup" aria-label="Interactive feature" data-i18n-aria="interactionAria">
+                <label class="interaction-card active">
+                  <input type="radio" name="interaction" value="glow" checked />
+                  <span class="interaction-icon glow-icon" aria-hidden="true"></span>
+                  <strong data-i18n="glowTitle">Cursor glow</strong>
+                  <small data-i18n="glowIntro">A soft glow follows the pointer</small>
+                </label>
+                <label class="interaction-card">
+                  <input type="radio" name="interaction" value="confetti" />
+                  <span class="interaction-icon confetti-icon" aria-hidden="true">✦</span>
+                  <strong data-i18n="confettiTitle">Click confetti</strong>
+                  <small data-i18n="confettiIntro">Clicks release colorful fragments</small>
+                </label>
+                <label class="interaction-card">
+                  <input type="radio" name="interaction" value="reveal" />
+                  <span class="interaction-icon reveal-icon" aria-hidden="true">+</span>
+                  <strong data-i18n="revealTitle">Hidden message</strong>
+                  <small data-i18n="revealIntro">A button reveals one personal detail</small>
+                </label>
+              </div>
+              <label class="secret-field" id="secret-field" hidden>
+                <span data-i18n="secretLabel">What should the hidden message say?</span>
+                <input id="secret" name="secret" type="text" maxlength="80" value="I am learning how to turn AI into real work." />
               </label>
-              <label class="interaction-card">
-                <input type="radio" name="interaction" value="confetti" />
-                <span class="interaction-icon confetti-icon" aria-hidden="true">✦</span>
-                <strong data-i18n="confettiTitle">Click confetti</strong>
-                <small data-i18n="confettiIntro">Clicks release colorful fragments</small>
-              </label>
-              <label class="interaction-card">
-                <input type="radio" name="interaction" value="reveal" />
-                <span class="interaction-icon reveal-icon" aria-hidden="true">+</span>
-                <strong data-i18n="revealTitle">Hidden message</strong>
-                <small data-i18n="revealIntro">A button reveals one personal detail</small>
-              </label>
-            </div>
-            <label class="secret-field" id="secret-field" hidden>
-              <span data-i18n="secretLabel">Hidden message</span>
-              <input id="secret" name="secret" type="text" maxlength="80" value="I am learning how to turn AI into real work." />
-            </label>
-          </section>
+            </section>
 
-          <div class="publish-row">
-            <div class="template-note">
-              <span class="template-stack" aria-hidden="true"><i></i><i></i><i></i></span>
-              <p><strong data-i18n="templateTitle">3 templates, chosen at random</strong><br /><span data-i18n="templateIntro">Every publish brings a different layout possibility.</span></p>
+            <section class="control-section wizard-step review-step" data-step="3" hidden>
+              <div class="section-heading">
+                <span class="section-number">04</span>
+                <div>
+                  <span class="question-label" data-i18n="finalStep">FINAL STEP</span>
+                  <h2 data-i18n="reviewTitle">Ready to make it real?</h2>
+                  <p data-i18n="reviewIntro">Check the essentials. Your final layout is still a surprise.</p>
+                </div>
+              </div>
+              <div class="review-card">
+                <div class="review-avatar" id="review-initials">RX</div>
+                <div class="review-copy">
+                  <span data-i18n="reviewProfile">PROFILE</span>
+                  <strong id="review-name">Rex</strong>
+                  <small id="review-title">Student Builder</small>
+                </div>
+                <div class="review-choice">
+                  <i id="review-color"></i>
+                  <span id="review-interaction">Cursor glow</span>
+                </div>
+              </div>
+              <div class="template-note review-template-note">
+                <span class="template-stack" aria-hidden="true"><i></i><i></i><i></i></span>
+                <p><strong data-i18n="templateTitle">3 templates, chosen at random</strong><br /><span data-i18n="templateIntro">The layout is revealed after the ten-second build.</span></p>
+              </div>
+              <button class="publish-button three-d-button" type="submit">
+                <span data-i18n="publish">Publish My Website</span>
+                <span aria-hidden="true">↗</span>
+              </button>
+            </section>
+          </div>
+
+          <div class="wizard-navigation">
+            <button class="wizard-back" id="wizard-back" type="button" hidden>
+              <span aria-hidden="true">←</span>
+              <span data-i18n="back">Back</span>
+            </button>
+            <div class="wizard-dots" aria-hidden="true">
+              <i class="active"></i><i></i><i></i><i></i>
             </div>
-            <button class="publish-button" type="submit">
-              <span data-i18n="publish">Publish My Website</span>
-              <span aria-hidden="true">↗</span>
+            <button class="wizard-next three-d-button" id="wizard-next" type="button">
+              <span data-i18n="continue">Continue</span>
+              <span aria-hidden="true">→</span>
             </button>
           </div>
           <p class="form-error" id="form-error" role="alert" hidden></p>
@@ -131,10 +179,7 @@
 
       <aside class="preview-panel" aria-label="Live personal site preview" data-i18n-aria="previewAria">
         <div class="preview-toolbar">
-          <div>
-            <span class="live-dot"></span>
-            <span data-i18n="livePreview">LIVE PREVIEW</span>
-          </div>
+          <div><span class="live-dot"></span><span data-i18n="livePreview">LIVE PREVIEW</span></div>
           <div class="device-switch" role="group" aria-label="Preview size" data-i18n-aria="previewSizeAria">
             <button type="button" data-device="mobile" aria-pressed="false" data-i18n="mobile">Mobile</button>
             <button type="button" data-device="desktop" class="active" aria-pressed="true" data-i18n="desktop">Desktop</button>
@@ -157,7 +202,7 @@
             <div class="preview-meta" data-i18n="madeWith">MADE WITH AI PRACTICE CLUB</div>
           </article>
         </div>
-        <p class="preview-caption" data-i18n="previewCaption">Your final template will be revealed when you publish.</p>
+        <p class="preview-caption" id="preview-caption" data-i18n="previewCaption">Every choice updates this preview.</p>
       </aside>
     </main>
 

@@ -4,7 +4,7 @@
 
 核心结构：
 
-- `index.html`：可视化 Builder 和实时预览
+- `index.html`：四步式可视化 Builder 和实时预览
 - `profile.html?id=AB12`：所有用户共用的个人网页模板入口
 - `styles.css`：Builder、三套个人模板和响应式样式
 - `app.js`：表单、中英文切换、随机模板、唯一 ID、10 秒生成进度和发布逻辑
@@ -14,13 +14,15 @@
 
 ## 1. 创建 Supabase 数据库
 
-1. 打开 [Supabase](https://supabase.com/) 并创建一个免费项目。
+1. 打开 [Supabase]https://supabase.com/() 并创建一个免费项目。
 2. 进入项目的 **SQL Editor**。
 3. 打开本项目的 `supabase.sql`，复制全部内容并运行。
 4. 进入 **Project Settings → API**。
 5. 记录以下两项：
    - Project URL
    - Publishable key（旧项目也可以使用 legacy anon key）
+https://alwftjgtowpgdxqtiazo.supabase.co
+   sb_publishable_Ve8syaOYUlYkRcd6ZwSQkA_zxKialD6
 
 不要把 `service_role` key 放进网页。
 
@@ -96,6 +98,17 @@ https://tangyuerex-web.github.io/ai-practice-club/profile-builder/profile.html?i
 - 每次新打开页面时默认显示英文，不读取或保存上一次语言选择。
 - 切换到中文后，导航、字段、预览、生成进度、结果弹窗、错误提示和个人模板界面都会完整切换。
 - 用户自己填写的姓名、标题、介绍和隐藏留言不会被自动翻译；只有尚未修改的示例内容会跟随语言切换。
+
+## 分步创作流程
+
+Builder 不再展示一张很长的表单，而是分成四个连续画面：
+
+1. 填写名字和个人标题。
+2. 填写一句介绍并选择主题颜色。
+3. 选择访客互动效果，必要时填写隐藏留言。
+4. 检查概要并发布网页。
+
+顶部进度条、步骤圆点和前后翻页按钮会显示当前位置；切换步骤时有短促的横向入场动画，按钮与选项卡带有按压和抬升反馈。
 
 ## 三套随机模板
 
