@@ -57,10 +57,10 @@
       questionFive: "QUESTION 5",
       finalStep: "FINAL STEP",
       identityTitle: "Who is this page about?",
-      identityIntro: "Give your page a name and a title.",
-      identityTip: "Try a title that says what you make, explore, or care about.",
+      identityIntro: "Give your page a name and a nickname.",
+      identityTip: "Use the name your friends would naturally call you.",
       nameLabel: "Name",
-      titleLabel: "Personal title",
+      titleLabel: "Nickname",
       bioLabel: "One-line introduction",
       expressionTitle: "What should your page feel like?",
       expressionIntro: "Write one line, then choose its visual energy.",
@@ -85,10 +85,8 @@
       revealIntro: "A button reveals one personal detail",
       secretLabel: "What should the hidden message say?",
       reviewTitle: "Ready to make it real?",
-      reviewIntro: "Check the essentials. Your final layout is still a surprise.",
+      reviewIntro: "Check your details, then publish your page.",
       reviewProfile: "PROFILE",
-      templateTitle: "3 templates, chosen at random",
-      templateIntro: "The layout is revealed after the ten-second build.",
       publish: "Publish My Website",
       back: "Back",
       continue: "Continue",
@@ -103,21 +101,19 @@
       desktop: "Desktop",
       profileYear: "PROFILE / 2026",
       hello: "HELLO, I AM",
-      explore: "Explore my world",
-      madeWith: "MADE WITH AI PRACTICE CLUB",
+      explore: "Know more about me",
       previewCaption: "Every choice updates this preview.",
       constructing: "AI is constructing your website",
       progressAria: "Website construction progress",
       aboutTenSeconds: "About 10 seconds",
       stepReading: "Reading your style...",
-      stepLayout: "Selecting your layout...",
+      stepLayout: "Designing your page...",
       stepInteraction: "Building your interaction...",
       stepLink: "Connecting your unique link...",
       stepFinishing: "Finishing details...",
       closeAria: "Close",
       resultEyebrow: "YOUR WEBSITE IS LIVE",
       resultTitle: "Your personal website is ready.",
-      templateLabel: "Template",
       idLabel: "Personal ID",
       shareLink: "Share this link",
       copyUrl: "Copy URL",
@@ -130,9 +126,6 @@
       uniqueIdError: "Could not create a unique ID. Please try again.",
       publishFailed: "Publish failed",
       configRetry: "Check the database configuration and try again.",
-      template_orbit: "Orbit",
-      template_blueprint: "Blueprint",
-      template_studio: "Studio"
     },
     zh: {
       pageTitle: "个人网页生成器 · 人工智能实践社",
@@ -156,10 +149,10 @@
       questionFive: "问题五",
       finalStep: "最后一步",
       identityTitle: "这个页面的主角是谁？",
-      identityIntro: "给你的页面一个名字和个人标题。",
-      identityTip: "个人标题可以说明你喜欢创作、探索或关注什么。",
+      identityIntro: "填写你的姓名和绰号。",
+      identityTip: "填写朋友平时最自然地称呼你的名字。",
       nameLabel: "名字",
-      titleLabel: "个人标题",
+      titleLabel: "绰号",
       bioLabel: "一句话介绍",
       expressionTitle: "你希望页面给人什么感觉？",
       expressionIntro: "先写一句介绍，再选择页面的视觉能量。",
@@ -184,10 +177,8 @@
       revealIntro: "点击按钮揭晓一条个人信息",
       secretLabel: "隐藏留言想写什么？",
       reviewTitle: "准备好把它变成真正的网页了吗？",
-      reviewIntro: "检查主要信息，最终版式仍会保留惊喜。",
+      reviewIntro: "检查你的信息，然后发布个人网页。",
       reviewProfile: "个人主页",
-      templateTitle: "三套模板随机生成",
-      templateIntro: "十秒构建完成后，最终版式才会揭晓。",
       publish: "发布我的网页",
       back: "返回",
       continue: "继续",
@@ -202,21 +193,19 @@
       desktop: "桌面端",
       profileYear: "个人主页 / 2026",
       hello: "你好，我是",
-      explore: "了解我的世界",
-      madeWith: "由人工智能实践社制作",
+      explore: "进一步了解我",
       previewCaption: "每个选择都会立即更新预览。",
       constructing: "人工智能正在构建你的网页",
       progressAria: "网页生成进度",
       aboutTenSeconds: "大约十秒",
       stepReading: "正在读取你的风格……",
-      stepLayout: "正在选择页面布局……",
+      stepLayout: "正在设计你的页面……",
       stepInteraction: "正在构建互动功能……",
       stepLink: "正在连接专属网址……",
       stepFinishing: "正在完成最后细节……",
       closeAria: "关闭",
       resultEyebrow: "你的网页已上线",
       resultTitle: "你的个人网页已生成。",
-      templateLabel: "模板",
       idLabel: "个人编号",
       shareLink: "分享这个链接",
       copyUrl: "复制网址",
@@ -229,14 +218,11 @@
       uniqueIdError: "无法生成唯一编号，请重试。",
       publishFailed: "发布失败",
       configRetry: "请检查数据库配置后重试。",
-      template_orbit: "星际轨道",
-      template_blueprint: "网格蓝图",
-      template_studio: "创意工作室"
     }
   };
 
   const localizedDefaults = {
-    title: { en: "Student Builder", zh: "学生创作者" },
+    title: { en: "Rex", zh: "小悦" },
     bio: { en: "Turning ideas into things that actually work.", zh: "把想法做成真正能运行的东西。" },
     secret: { en: "I am learning how to turn AI into real work.", zh: "我正在学习如何把人工智能变成真正的作品。" }
   };
@@ -287,10 +273,8 @@
   }
 
   function initials(value) {
-    const parts = value.trim().split(/\s+/).filter(Boolean);
-    if (!parts.length) return "YOU";
-    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-    return `${parts[0][0]}${parts.at(-1)[0]}`.toUpperCase();
+    const first = [...value.trim()].find((character) => /[\p{L}\p{N}]/u.test(character));
+    return (first || "Y").toUpperCase();
   }
 
   function updatePreview() {
@@ -593,7 +577,6 @@
       const url = profileUrl(saved.profile.id);
       resultUrl.value = url;
       openSite.href = url;
-      $("#result-template").textContent = t(`template_${saved.profile.template_id}`);
       $("#result-id").textContent = saved.profile.id;
       demoWarning.hidden = !saved.demo;
       overlay.hidden = true;

@@ -15,17 +15,22 @@
       languageAria: "Choose language",
       loading: "Loading your personal website...",
       titleSuffix: "Personal Site",
-      personalSpace: "PERSONAL SPACE",
-      profileCode: "PROFILE",
-      hello: "HELLO, I AM",
+      profileCode: "PERSONAL PAGE",
+      profileLabel: "PROFILE",
+      nicknameLabel: "NICKNAME",
+      aboutLabel: "ABOUT ME",
+      knowMore: "Know more about me",
+      playLabel: "PLAYGROUND",
+      interactionTitle: "Try something small.",
+      interactionIntro: "Follow the prompt below. This page responds to you.",
+      backToProfile: "Back to profile",
+      pageSliderAria: "Personal page navigation",
       glow: "Move your pointer",
       glowActive: "The glow is following you ✦",
       confetti: "Click anywhere to try it",
       reveal: "Reveal a hidden message",
       revealed: "Message revealed ✓",
       defaultSecret: "Welcome to my personal website.",
-      madeWith: "MADE WITH AI PRACTICE CLUB",
-      footerLine: "THREE LAYOUTS · ONE UNIQUE ID · YOUR WEBSITE",
       createMine: "Create my personal website →",
       notFoundTitle: "Page not found",
       notFoundMessage: "This ID does not exist, or the personal website has not been published successfully.",
@@ -38,17 +43,22 @@
       languageAria: "选择语言",
       loading: "正在读取个人网页……",
       titleSuffix: "个人网页",
-      personalSpace: "个人空间",
-      profileCode: "个人编号",
-      hello: "你好，我是",
+      profileCode: "个人主页",
+      profileLabel: "个人资料",
+      nicknameLabel: "绰号",
+      aboutLabel: "关于我",
+      knowMore: "进一步了解我",
+      playLabel: "互动空间",
+      interactionTitle: "来试一个小互动。",
+      interactionIntro: "按照下方提示操作，这个页面会回应你。",
+      backToProfile: "返回个人资料",
+      pageSliderAria: "个人主页分页导航",
       glow: "移动你的指针",
       glowActive: "光点正在跟随你 ✦",
       confetti: "点击任意位置试试看",
       reveal: "揭晓一条隐藏留言",
       revealed: "隐藏留言已揭晓 ✓",
       defaultSecret: "欢迎来到我的个人网页。",
-      madeWith: "由人工智能实践社制作",
-      footerLine: "三种布局 · 一个专属编号 · 你的个人网页",
       createMine: "创建我的个人网页 →",
       notFoundTitle: "页面没有找到",
       notFoundMessage: "这个编号不存在，或者个人网页尚未成功发布。",
@@ -62,6 +72,7 @@
   let language = "en";
   let loadedProfile = null;
   let currentError = null;
+  let currentProfilePage = 0;
 
   function t(key) {
     return translations[language][key] || translations.en[key] || key;
@@ -82,11 +93,9 @@
     return headers;
   }
 
-  function initials(value) {
-    const parts = value.trim().split(/\s+/).filter(Boolean);
-    if (!parts.length) return "YOU";
-    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-    return `${parts[0][0]}${parts.at(-1)[0]}`.toUpperCase();
+  function monogram(value) {
+    const first = [...value.trim()].find((character) => /[\p{L}\p{N}]/u.test(character));
+    return (first || "Y").toUpperCase();
   }
 
   function setLanguage(nextLanguage) {
@@ -144,61 +153,123 @@
     return t("glow");
   }
 
+  function goToProfilePage(page) {
+    currentProfilePage = Math.max(0, Math.min(1, Number(page) || 0));
+    const track = root.querySelector(".personal-page-track");
+    const slider = root.querySelector(".personal-page-slider");
+    if (!track || !slider) return;
+    track.style.transform = `translateX(-${currentProfilePage * 100}%)`;
+    slider.value = String(currentProfilePage);
+    slider.style.setProperty("--page-progress", `${currentProfilePage * 100}%`);
+    root.dataset.page = String(currentProfilePage + 1);
+    root.querySelectorAll("[data-profile-page]").forEach((control) => {
+      control.classList.toggle("active", Number(control.dataset.profilePage) === currentProfilePage);
+    });
+  }
+
+  function activateProfileNavigation() {
+    root.querySelectorAll("[data-profile-page]").forEach((control) => {
+      control.addEventListener("click", () => goToProfilePage(control.dataset.profilePage));
+    });
+    const slider = root.querySelector(".personal-page-slider");
+    slider.addEventListener("input", () => goToProfilePage(slider.value));
+
+    const viewport = root.querySelector(".personal-page-viewport");
+    let startX = null;
+    let startY = null;
+    viewport.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("button, input")) return;
+      startX = event.clientX;
+      startY = event.clientY;
+    });
+    viewport.addEventListener("pointerup", (event) => {
+      if (startX === null || startY === null) return;
+      const distanceX = event.clientX - startX;
+      const distanceY = event.clientY - startY;
+      startX = null;
+      startY = null;
+      if (Math.abs(distanceX) < 56 || Math.abs(distanceX) <= Math.abs(distanceY)) return;
+      goToProfilePage(distanceX < 0 ? 1 : 0);
+    });
+    viewport.addEventListener("pointercancel", () => {
+      startX = null;
+      startY = null;
+    });
+    goToProfilePage(currentProfilePage);
+  }
+
   function renderProfile(profile) {
     currentError = null;
     const template = ["orbit", "blueprint", "studio"].includes(profile.template_id)
       ? profile.template_id
       : "orbit";
     const accent = /^#[0-9A-F]{6}$/i.test(profile.accent_color) ? profile.accent_color : "#C7FF43";
-    const shortName = initials(profile.name);
+    const shortName = monogram(profile.name);
 
     document.title = `${profile.name} · ${t("titleSuffix")}`;
     document.documentElement.style.setProperty("--accent", accent);
     root.className = `generated-profile template-${template}`;
     root.innerHTML = `
       <header class="profile-top">
-        <div class="profile-logo"><i>AI</i><span>${t("personalSpace")}</span></div>
+        <button class="profile-logo" type="button" data-profile-page="0" aria-label="${t("backToProfile")}"><i>${shortName}</i><span data-field="owner"></span></button>
         <div class="profile-code">${t("profileCode")} / ${id}</div>
       </header>
-      <section class="profile-main">
-        <div class="profile-index">01/03</div>
-        <div class="profile-copy">
-          <div class="profile-kicker">${t("hello")}</div>
-          <h1 data-field="name"></h1>
-          <h2 class="profile-title" data-field="title"></h2>
-          <p class="profile-bio" data-field="bio"></p>
-          <button class="profile-interaction" type="button"><span>✦</span> ${interactionLabel(profile.interaction)}</button>
-          <div class="secret-slot"></div>
+      <div class="personal-page-viewport">
+        <div class="personal-page-track">
+          <section class="profile-slide profile-overview">
+            <div class="profile-copy">
+              <div class="profile-kicker">${t("profileLabel")} · 01</div>
+              <h1 data-field="name"></h1>
+              <div class="nickname-block"><span>${t("nicknameLabel")}</span><h2 class="profile-title" data-field="title"></h2></div>
+              <div class="about-block"><span>${t("aboutLabel")}</span><p class="profile-bio" data-field="bio"></p></div>
+              <button class="profile-next" type="button" data-profile-page="1"><span>${t("knowMore")}</span><b aria-hidden="true">→</b></button>
+            </div>
+            <div class="profile-watermark" aria-hidden="true">${shortName}</div>
+          </section>
+          <section class="profile-slide profile-playground">
+            <div class="profile-monogram" aria-hidden="true">${shortName}</div>
+            <aside class="interaction-panel">
+              <div class="profile-kicker">${t("playLabel")} · 02</div>
+              <h2>${t("interactionTitle")}</h2>
+              <p>${t("interactionIntro")}</p>
+              <button class="profile-interaction" type="button"><span>✦</span><b>${interactionLabel(profile.interaction)}</b></button>
+              <div class="secret-slot"></div>
+            </aside>
+          </section>
         </div>
-        <div class="profile-art" data-initials="${shortName.replace(/[^\p{L}\p{N}]/gu, "")}" aria-hidden="true"></div>
-      </section>
-      <footer class="profile-footer">
-        <span>${t("madeWith")}</span>
-        <span>${t("footerLine")}</span>
-      </footer>
+      </div>
+      <nav class="personal-page-nav" aria-label="${t("pageSliderAria")}">
+        <button type="button" data-profile-page="0">01 <span>${t("profileLabel")}</span></button>
+        <input class="personal-page-slider" type="range" min="0" max="1" step="1" value="0" aria-label="${t("pageSliderAria")}" />
+        <button type="button" data-profile-page="1">02 <span>${t("playLabel")}</span></button>
+      </nav>
     `;
 
+    root.querySelector("[data-field='owner']").textContent = profile.name;
     root.querySelector("[data-field='name']").textContent = profile.name;
     root.querySelector("[data-field='title']").textContent = profile.title;
     root.querySelector("[data-field='bio']").textContent = profile.bio;
+    activateProfileNavigation();
     activateInteraction(profile);
   }
 
   function activateInteraction(profile) {
     const button = root.querySelector(".profile-interaction");
+    const playground = root.querySelector(".profile-playground");
 
     if (profile.interaction === "glow") {
       const glow = document.createElement("div");
       glow.className = "cursor-glow";
       glow.hidden = true;
-      root.append(glow);
-      root.addEventListener("pointermove", (event) => {
+      playground.append(glow);
+      playground.addEventListener("pointermove", (event) => {
+        const bounds = playground.getBoundingClientRect();
         glow.hidden = false;
-        glow.style.left = `${event.clientX}px`;
-        glow.style.top = `${event.clientY}px`;
+        glow.style.left = `${event.clientX - bounds.left}px`;
+        glow.style.top = `${event.clientY - bounds.top}px`;
       });
-      root.addEventListener("pointerleave", () => { glow.hidden = true; });
-      button.addEventListener("click", () => { button.textContent = t("glowActive"); });
+      playground.addEventListener("pointerleave", () => { glow.hidden = true; });
+      button.addEventListener("click", () => { button.querySelector("b").textContent = t("glowActive"); });
       return;
     }
 
@@ -221,7 +292,7 @@
           piece.addEventListener("animationend", () => piece.remove(), { once: true });
         }
       };
-      root.addEventListener("click", burst);
+      playground.addEventListener("click", burst);
       return;
     }
 
@@ -232,7 +303,7 @@
       message.className = "secret-message";
       message.textContent = profile.secret_text || t("defaultSecret");
       slot.append(message);
-      button.textContent = t("revealed");
+      button.querySelector("b").textContent = t("revealed");
     });
   }
 
