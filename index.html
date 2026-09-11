@@ -40,7 +40,8 @@
         </div>
 
         <form id="builder-form" novalidate>
-          <div class="wizard-viewport">
+          <div class="wizard-viewport" id="wizard-viewport">
+            <div class="wizard-track" id="wizard-track">
             <section class="control-section wizard-step active" data-step="0">
               <div class="section-heading">
                 <span class="section-number">01</span>
@@ -63,7 +64,7 @@
               <div class="step-tip"><span aria-hidden="true">↗</span><p data-i18n="identityTip">Try a title that says what you make, explore, or care about.</p></div>
             </section>
 
-            <section class="control-section wizard-step" data-step="1" hidden>
+            <section class="control-section wizard-step" data-step="1">
               <div class="section-heading">
                 <span class="section-number">02</span>
                 <div>
@@ -93,7 +94,7 @@
               </div>
             </section>
 
-            <section class="control-section wizard-step" data-step="2" hidden>
+            <section class="control-section wizard-step" data-step="2">
               <div class="section-heading">
                 <span class="section-number">03</span>
                 <div>
@@ -128,7 +129,7 @@
               </label>
             </section>
 
-            <section class="control-section wizard-step review-step" data-step="3" hidden>
+            <section class="control-section wizard-step review-step" data-step="3">
               <div class="section-heading">
                 <span class="section-number">04</span>
                 <div>
@@ -158,6 +159,16 @@
                 <span aria-hidden="true">↗</span>
               </button>
             </section>
+            </div>
+          </div>
+
+          <div class="page-scrubber">
+            <div class="page-scrubber-copy">
+              <span data-i18n="slideToNavigate">SLIDE TO CHANGE PAGE</span>
+              <span class="draft-status" id="draft-status" aria-live="polite" data-i18n="draftSaved">Draft saved</span>
+            </div>
+            <input id="wizard-slider" type="range" min="1" max="4" step="1" value="1" aria-label="Slide to change page" data-i18n-aria="slideAria" />
+            <div class="page-scrubber-marks" aria-hidden="true"><span>01</span><span>02</span><span>03</span><span>04</span></div>
           </div>
 
           <div class="wizard-navigation">

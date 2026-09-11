@@ -14,15 +14,13 @@
 
 ## 1. 创建 Supabase 数据库
 
-1. 打开 [Supabase]https://supabase.com/() 并创建一个免费项目。
+1. 打开 [Supabase](https://supabase.com/) 并创建一个免费项目。
 2. 进入项目的 **SQL Editor**。
 3. 打开本项目的 `supabase.sql`，复制全部内容并运行。
 4. 进入 **Project Settings → API**。
 5. 记录以下两项：
    - Project URL
    - Publishable key（旧项目也可以使用 legacy anon key）
-https://alwftjgtowpgdxqtiazo.supabase.co
-   sb_publishable_Ve8syaOYUlYkRcd6ZwSQkA_zxKialD6
 
 不要把 `service_role` key 放进网页。
 
@@ -108,7 +106,9 @@ Builder 不再展示一张很长的表单，而是分成四个连续画面：
 3. 选择访客互动效果，必要时填写隐藏留言。
 4. 检查概要并发布网页。
 
-顶部进度条、步骤圆点和前后翻页按钮会显示当前位置；切换步骤时有短促的横向入场动画，按钮与选项卡带有按压和抬升反馈。
+顶部进度条、步骤圆点和前后翻页按钮会显示当前位置；也可以拖动四段式分页滑杆，或在手机端左右滑动页面。切换页面采用完整的横向滑屏动画。
+
+填写的姓名、标题、介绍、颜色、互动方式、隐藏留言和当前页码都会自动保存为浏览器草稿。前后翻页不会清空内容，意外刷新或关闭后重新打开也会恢复；发布到 Supabase 的跨设备数据逻辑保持不变。
 
 ## 三套随机模板
 

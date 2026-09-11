@@ -27,6 +27,10 @@
   const wizardProgressBar = $("#wizard-progress-bar");
   const wizardStepCount = $("#wizard-step-count");
   const wizardStepName = $("#wizard-step-name");
+  const wizardViewport = $("#wizard-viewport");
+  const wizardTrack = $("#wizard-track");
+  const wizardSlider = $("#wizard-slider");
+  const draftStatus = $("#draft-status");
   const config = window.PROFILE_BUILDER_CONFIG || {};
   const apiKey = config.SUPABASE_PUBLISHABLE_KEY || config.SUPABASE_ANON_KEY || "";
 
@@ -88,6 +92,10 @@
       publish: "Publish My Website",
       back: "Back",
       continue: "Continue",
+      slideToNavigate: "SLIDE TO CHANGE PAGE",
+      slideAria: "Slide to change page",
+      draftSaved: "Draft saved",
+      draftSaving: "Saving...",
       previewAria: "Live personal site preview",
       livePreview: "LIVE PREVIEW",
       previewSizeAria: "Preview size",
@@ -183,6 +191,10 @@
       publish: "发布我的网页",
       back: "返回",
       continue: "继续",
+      slideToNavigate: "滑动切换页面",
+      slideAria: "滑动切换页面",
+      draftSaved: "草稿已保存",
+      draftSaving: "正在保存……",
       previewAria: "个人网页实时预览",
       livePreview: "实时预览",
       previewSizeAria: "预览尺寸",
@@ -233,6 +245,9 @@
   let publishing = false;
   let language = "en";
   let currentStep = 0;
+  let draftTimer = 0;
+  let restoringDraft = false;
+  const draftKey = "profile_builder_draft_v3";
   const stepNameKeys = ["stepIdentity", "stepExpression", "stepInteraction", "stepReview"];
 
   function t(key) {
@@ -309,12 +324,82 @@
       .replace("%2", String(total).padStart(2, "0"));
     wizardStepName.textContent = t(stepNameKeys[currentStep]);
     wizardProgressBar.style.width = `${(current / total) * 100}%`;
+    wizardTrack.style.transform = `translateX(-${currentStep * 100}%)`;
+    wizardSlider.value = String(current);
+    wizardSlider.style.setProperty("--slider-progress", `${((current - 1) / (total - 1)) * 100}%`);
     $(".wizard-progress").setAttribute("aria-valuenow", String(current));
     wizardBack.hidden = currentStep === 0;
     wizardNext.hidden = currentStep === total - 1;
     $$(".wizard-dots i").forEach((dot, index) => {
       dot.classList.toggle("active", index <= currentStep);
     });
+    wizardSteps.forEach((step, index) => {
+      const active = index === currentStep;
+      step.classList.toggle("active", active);
+      step.setAttribute("aria-hidden", String(!active));
+      if ("inert" in step) step.inert = !active;
+    });
+  }
+
+  function draftSnapshot() {
+    return {
+      name: nameInput.value,
+      title: titleInput.value,
+      bio: bioInput.value,
+      secret: secretInput.value,
+      accent,
+      interaction: selectedInteraction(),
+      currentStep,
+      savedAt: Date.now()
+    };
+  }
+
+  function saveDraftNow() {
+    if (restoringDraft) return;
+    try {
+      localStorage.setItem(draftKey, JSON.stringify(draftSnapshot()));
+      draftStatus.textContent = t("draftSaved");
+      draftStatus.classList.add("saved");
+      setTimeout(() => draftStatus.classList.remove("saved"), 650);
+    } catch {
+      // The builder still keeps every answer while this tab remains open.
+    }
+  }
+
+  function queueDraftSave() {
+    if (restoringDraft) return;
+    clearTimeout(draftTimer);
+    draftStatus.textContent = t("draftSaving");
+    draftTimer = setTimeout(saveDraftNow, 180);
+  }
+
+  function restoreDraft() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(draftKey) || "null");
+      if (!saved || typeof saved !== "object") return;
+      restoringDraft = true;
+      if (typeof saved.name === "string") nameInput.value = saved.name.slice(0, 32);
+      if (typeof saved.title === "string") titleInput.value = saved.title.slice(0, 48);
+      if (typeof saved.bio === "string") bioInput.value = saved.bio.slice(0, 180);
+      if (typeof saved.secret === "string") secretInput.value = saved.secret.slice(0, 80);
+      if (/^#[0-9A-F]{6}$/i.test(saved.accent || "")) accent = saved.accent.toUpperCase();
+      const interaction = ["glow", "confetti", "reveal"].includes(saved.interaction) ? saved.interaction : "glow";
+      const radio = $(`input[name='interaction'][value='${interaction}']`);
+      if (radio) radio.checked = true;
+      currentStep = Math.max(0, Math.min(wizardSteps.length - 1, Number(saved.currentStep) || 0));
+      document.documentElement.style.setProperty("--accent", accent);
+      $("#color-value").textContent = accent;
+      $("#custom-color").value = accent;
+      $$(".color-orb").forEach((button) => {
+        const active = button.dataset.color.toUpperCase() === accent;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+    } catch {
+      // Ignore an old or incomplete draft and continue with safe defaults.
+    } finally {
+      restoringDraft = false;
+    }
   }
 
   function pulsePreview() {
@@ -333,18 +418,10 @@
   function goToStep(nextStep) {
     const target = Math.max(0, Math.min(wizardSteps.length - 1, nextStep));
     if (target === currentStep) return;
-    const movingBack = target < currentStep;
-    const previous = wizardSteps[currentStep];
-    previous.classList.remove("active", "from-forward", "from-back");
-    previous.hidden = true;
     currentStep = target;
-    const next = wizardSteps[currentStep];
-    next.hidden = false;
-    next.classList.remove("active", "from-forward", "from-back");
-    void next.offsetWidth;
-    next.classList.add("active", movingBack ? "from-back" : "from-forward");
     updateReview();
     updateWizardUi();
+    queueDraftSave();
     pulsePreview();
     if (window.innerWidth <= 1050) {
       $(".wizard-progress").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -363,6 +440,7 @@
     });
     updateReview();
     pulsePreview();
+    queueDraftSave();
   }
 
   function selectedInteraction() {
@@ -375,6 +453,7 @@
     });
     $("#secret-field").hidden = selectedInteraction() !== "reveal";
     updateReview();
+    queueDraftSave();
   }
 
   function chooseTemplate() {
@@ -530,9 +609,10 @@
     }
   }
 
-  [nameInput, titleInput, bioInput].forEach((input) => input.addEventListener("input", () => {
+  [nameInput, titleInput, bioInput, secretInput].forEach((input) => input.addEventListener("input", () => {
     updatePreview();
     updateReview();
+    queueDraftSave();
   }));
   $$(".color-orb").forEach((button) => button.addEventListener("click", () => setAccent(button.dataset.color, button)));
   $("#custom-color").addEventListener("input", (event) => setAccent(event.target.value));
@@ -552,6 +632,28 @@
     if (validateCurrentStep()) goToStep(currentStep + 1);
   });
   wizardBack.addEventListener("click", () => goToStep(currentStep - 1));
+  wizardSlider.addEventListener("input", () => goToStep(Number(wizardSlider.value) - 1));
+
+  let swipeStartX = null;
+  let swipeStartY = null;
+  wizardViewport.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" || event.target.closest("input, textarea, button, label")) return;
+    swipeStartX = event.clientX;
+    swipeStartY = event.clientY;
+  });
+  wizardViewport.addEventListener("pointerup", (event) => {
+    if (swipeStartX === null || swipeStartY === null) return;
+    const distanceX = event.clientX - swipeStartX;
+    const distanceY = event.clientY - swipeStartY;
+    swipeStartX = null;
+    swipeStartY = null;
+    if (Math.abs(distanceX) < 54 || Math.abs(distanceX) <= Math.abs(distanceY)) return;
+    if (distanceX < 0 && currentStep < wizardSteps.length - 1) {
+      if (validateCurrentStep()) goToStep(currentStep + 1);
+    } else if (distanceX > 0) {
+      goToStep(currentStep - 1);
+    }
+  });
   form.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && event.target.tagName !== "TEXTAREA" && currentStep < wizardSteps.length - 1) {
       event.preventDefault();
@@ -574,6 +676,9 @@
     setTimeout(() => { copyUrlButton.textContent = t("copyUrl"); }, 1800);
   });
 
+  restoreDraft();
   setLanguage("en");
   updateInteractionCards();
+  updateWizardUi();
+  window.addEventListener("pagehide", saveDraftNow);
 })();
