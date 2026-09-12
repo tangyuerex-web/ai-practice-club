@@ -54,7 +54,7 @@
       stepReview: "Ready to publish",
       questionOne: "QUESTION 1–2",
       questionThreeFour: "QUESTION 3–4",
-      questionFive: "QUESTION 5",
+      questionFiveSix: "QUESTIONS 5–6",
       finalStep: "FINAL STEP",
       identityTitle: "Who is this page about?",
       identityIntro: "Give your page a name and a nickname.",
@@ -74,16 +74,17 @@
       customColorAria: "Custom color",
       customColor: "CUSTOM",
       activeColor: "ACTIVE COLOR",
-      interactionTitle: "How should visitors interact?",
-      interactionIntro: "Choose one small effect that gives your page personality.",
+      interactionTitle: "Add one more detail.",
+      interactionIntro: "Share something extra, then choose how the page responds to touch.",
+      extraQuestion: "What else should visitors know?",
+      effectQuestion: "Choose a touch effect",
       interactionAria: "Interactive feature",
-      glowTitle: "Cursor glow",
-      glowIntro: "A soft glow follows the pointer",
-      confettiTitle: "Click confetti",
-      confettiIntro: "Clicks release colorful fragments",
-      revealTitle: "Hidden message",
-      revealIntro: "A button reveals one personal detail",
-      secretLabel: "What should the hidden message say?",
+      glowTitle: "Touch stars",
+      glowIntro: "Taps release tiny stars",
+      confettiTitle: "Touch ribbons",
+      confettiIntro: "Taps release colorful ribbons",
+      secretLabel: "Supplementary information",
+      secretPlaceholder: "One thing people might not know about me...",
       reviewTitle: "Ready to make it real?",
       reviewIntro: "Check your details, then publish your page.",
       reviewProfile: "PROFILE",
@@ -126,6 +127,7 @@
       uniqueIdError: "Could not create a unique ID. Please try again.",
       publishFailed: "Publish failed",
       configRetry: "Check the database configuration and try again.",
+      tableMissing: "The profiles table is missing. Run supabase.sql in the Supabase SQL Editor, then publish again.",
     },
     zh: {
       pageTitle: "个人网页生成器 · 人工智能实践社",
@@ -146,7 +148,7 @@
       stepReview: "准备发布",
       questionOne: "问题一至二",
       questionThreeFour: "问题三至四",
-      questionFive: "问题五",
+      questionFiveSix: "问题五至六",
       finalStep: "最后一步",
       identityTitle: "这个页面的主角是谁？",
       identityIntro: "填写你的姓名和绰号。",
@@ -166,16 +168,17 @@
       customColorAria: "自定义颜色",
       customColor: "自定义",
       activeColor: "当前颜色",
-      interactionTitle: "你希望访客怎样与页面互动？",
-      interactionIntro: "选择一个小效果，让页面更有自己的性格。",
+      interactionTitle: "再补充一个关于你的细节。",
+      interactionIntro: "先填写补充信息，再选择页面响应触碰的方式。",
+      extraQuestion: "你还想让访客了解什么？",
+      effectQuestion: "选择触屏效果",
       interactionAria: "互动功能",
-      glowTitle: "光点跟随",
-      glowIntro: "指针经过时产生柔和光晕",
-      confettiTitle: "点击彩片",
-      confettiIntro: "点击页面释放主题色碎片",
-      revealTitle: "隐藏留言",
-      revealIntro: "点击按钮揭晓一条个人信息",
-      secretLabel: "隐藏留言想写什么？",
+      glowTitle: "触碰星星",
+      glowIntro: "触碰页面会释放小星星",
+      confettiTitle: "触碰彩带",
+      confettiIntro: "触碰页面会释放彩色飘带",
+      secretLabel: "补充信息",
+      secretPlaceholder: "写一件别人可能还不知道的事……",
       reviewTitle: "准备好把它变成真正的网页了吗？",
       reviewIntro: "检查你的信息，然后发布个人网页。",
       reviewProfile: "个人主页",
@@ -218,13 +221,13 @@
       uniqueIdError: "无法生成唯一编号，请重试。",
       publishFailed: "发布失败",
       configRetry: "请检查数据库配置后重试。",
+      tableMissing: "数据库中还没有个人主页数据表。请先在 Supabase 的 SQL 编辑器中运行 supabase.sql，再重新发布。",
     }
   };
 
   const localizedDefaults = {
     title: { en: "Rex", zh: "小悦" },
-    bio: { en: "Turning ideas into things that actually work.", zh: "把想法做成真正能运行的东西。" },
-    secret: { en: "I am learning how to turn AI into real work.", zh: "我正在学习如何把人工智能变成真正的作品。" }
+    bio: { en: "Turning ideas into things that actually work.", zh: "把想法做成真正能运行的东西。" }
   };
 
   let accent = "#C7FF43";
@@ -249,7 +252,6 @@
     if (!translations[nextLanguage]) return;
     translateDefaultInput(titleInput, "title", nextLanguage);
     translateDefaultInput(bioInput, "bio", nextLanguage);
-    translateDefaultInput(secretInput, "secret", nextLanguage);
     language = nextLanguage;
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
     document.title = t("pageTitle");
@@ -259,6 +261,9 @@
     });
     $$('[data-i18n-aria]').forEach((element) => {
       element.setAttribute("aria-label", t(element.dataset.i18nAria));
+    });
+    $$('[data-i18n-placeholder]').forEach((element) => {
+      element.setAttribute("placeholder", t(element.dataset.i18nPlaceholder));
     });
     $$(".language-switch button").forEach((button) => {
       const active = button.dataset.language === language;
@@ -287,7 +292,7 @@
   }
 
   function interactionName() {
-    const keys = { glow: "glowTitle", confetti: "confettiTitle", reveal: "revealTitle" };
+    const keys = { glow: "glowTitle", confetti: "confettiTitle", reveal: "glowTitle" };
     return t(keys[selectedInteraction()] || "glowTitle");
   }
 
@@ -367,7 +372,7 @@
       if (typeof saved.bio === "string") bioInput.value = saved.bio.slice(0, 180);
       if (typeof saved.secret === "string") secretInput.value = saved.secret.slice(0, 80);
       if (/^#[0-9A-F]{6}$/i.test(saved.accent || "")) accent = saved.accent.toUpperCase();
-      const interaction = ["glow", "confetti", "reveal"].includes(saved.interaction) ? saved.interaction : "glow";
+      const interaction = saved.interaction === "confetti" ? "confetti" : "glow";
       const radio = $(`input[name='interaction'][value='${interaction}']`);
       if (radio) radio.checked = true;
       currentStep = Math.max(0, Math.min(wizardSteps.length - 1, Number(saved.currentStep) || 0));
@@ -397,6 +402,17 @@
     if (!invalid) return true;
     invalid.reportValidity();
     return false;
+  }
+
+  function validateBeforeStep(targetStep) {
+    for (let index = 0; index < targetStep; index += 1) {
+      const invalid = $$("input, textarea", wizardSteps[index]).find((control) => !control.checkValidity());
+      if (!invalid) continue;
+      if (index !== currentStep) goToStep(index);
+      setTimeout(() => invalid.reportValidity(), 180);
+      return false;
+    }
+    return true;
   }
 
   function goToStep(nextStep) {
@@ -435,7 +451,6 @@
     $$(".interaction-card").forEach((card) => {
       card.classList.toggle("active", $("input", card).checked);
     });
-    $("#secret-field").hidden = selectedInteraction() !== "reveal";
     updateReview();
     queueDraftSave();
   }
@@ -583,7 +598,9 @@
       resultDialog.showModal();
     } catch (error) {
       overlay.hidden = true;
-      const details = language === "zh" ? t("configRetry") : (error.message || t("configRetry"));
+      const details = String(error.message || "").includes("PGRST205")
+        ? t("tableMissing")
+        : (language === "zh" ? t("configRetry") : (error.message || t("configRetry")));
       formError.textContent = `${t("publishFailed")}: ${details}`;
       formError.hidden = false;
     } finally {
@@ -615,7 +632,14 @@
     if (validateCurrentStep()) goToStep(currentStep + 1);
   });
   wizardBack.addEventListener("click", () => goToStep(currentStep - 1));
-  wizardSlider.addEventListener("input", () => goToStep(Number(wizardSlider.value) - 1));
+  wizardSlider.addEventListener("input", () => {
+    const target = Number(wizardSlider.value) - 1;
+    if (target > currentStep && !validateBeforeStep(target)) {
+      updateWizardUi();
+      return;
+    }
+    goToStep(target);
+  });
 
   let swipeStartX = null;
   let swipeStartY = null;

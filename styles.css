@@ -482,7 +482,7 @@ button { color: inherit; }
 
 .interaction-cards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -518,9 +518,13 @@ button { color: inherit; }
 }
 
 .glow-icon { position: relative; }
-.glow-icon::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px var(--accent); }
+.glow-icon::after { content: "✦"; color: var(--accent); font-size: 23px; text-shadow: 0 0 14px var(--accent); }
 
-.secret-field { margin-top: 14px; }
+.subquestion-label { margin: 4px 0 10px; display: flex; align-items: center; gap: 9px; color: var(--ink); }
+.subquestion-label span { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; background: var(--ink); color: var(--accent); font: 800 9px/1 ui-monospace, SFMono-Regular, Menlo, monospace; }
+.subquestion-label strong { font-size: 13px; }
+.subquestion-label.effect-question { margin-top: 22px; }
+.secret-field { margin-top: 0; }
 .secret-field input { height: 52px; padding: 0 15px; border-radius: 14px; }
 
 .publish-row {
@@ -734,11 +738,26 @@ button { color: inherit; }
 .profile-watermark { width: min(34vw, 440px); aspect-ratio: 1; justify-self: end; border: clamp(14px, 2vw, 28px) solid var(--accent); border-radius: 50%; display: grid; place-items: center; color: var(--profile-ink); font: 950 clamp(150px, 22vw, 330px)/1 ui-monospace, SFMono-Regular, Menlo, monospace; transform: rotate(7deg); animation: profileArtIn 720ms 80ms cubic-bezier(.16,.84,.32,1) both; }
 .profile-playground { padding: 104px clamp(24px, 7vw, 110px) 105px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 410px); align-items: center; gap: clamp(24px, 5vw, 70px); background: var(--profile-ink); color: var(--profile-bg); }
 .profile-playground::before { content: ""; position: absolute; width: min(68vw, 900px); aspect-ratio: 1; left: -17%; top: -35%; border: 2px solid color-mix(in srgb, var(--accent) 58%, transparent); border-radius: 50%; }
+.effect-decoration { position: absolute; inset: 76px 0 72px; z-index: 1; overflow: hidden; pointer-events: none; }
+.effect-decoration i { position: absolute; display: block; opacity: .72; }
+.effect-decoration i:nth-child(1) { left: 7%; top: 15%; transform: rotate(-12deg) scale(1.2); }
+.effect-decoration i:nth-child(2) { left: 22%; top: 72%; transform: rotate(18deg) scale(.72); }
+.effect-decoration i:nth-child(3) { left: 39%; top: 10%; transform: rotate(35deg) scale(.9); }
+.effect-decoration i:nth-child(4) { left: 54%; top: 80%; transform: rotate(-24deg) scale(1.1); }
+.effect-decoration i:nth-child(5) { right: 34%; top: 29%; transform: rotate(16deg) scale(.65); }
+.effect-decoration i:nth-child(6) { right: 20%; top: 63%; transform: rotate(-44deg) scale(.9); }
+.effect-decoration i:nth-child(7) { right: 6%; top: 20%; transform: rotate(20deg) scale(1.15); }
+.effect-decoration i:nth-child(8) { right: 9%; bottom: 8%; transform: rotate(-8deg) scale(.66); }
+.effect-decoration i:nth-child(9) { left: 31%; top: 43%; transform: rotate(50deg) scale(.55); }
+.effect-stars .effect-decoration i::before { content: "✦"; color: var(--accent); font: 900 clamp(18px, 2.2vw, 34px)/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-shadow: 0 0 18px color-mix(in srgb, var(--accent) 65%, transparent); }
+.effect-ribbons .effect-decoration i { width: clamp(25px, 3.4vw, 54px); height: clamp(7px, .75vw, 12px); border-radius: 999px; background: var(--accent); box-shadow: clamp(9px, 1.1vw, 18px) clamp(7px, .8vw, 13px) 0 color-mix(in srgb, var(--accent) 48%, white); }
 .profile-monogram { position: relative; z-index: 2; min-width: 0; text-align: center; color: var(--accent); font: 950 clamp(270px, 50vw, 760px)/.72 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: -.1em; user-select: none; filter: drop-shadow(0 22px 45px rgba(0,0,0,.32)); }
 .interaction-panel { position: relative; z-index: 4; align-self: center; padding: clamp(22px, 3vw, 38px); border-left: 2px solid var(--accent); background: color-mix(in srgb, var(--profile-ink) 88%, transparent); backdrop-filter: blur(14px); }
 .interaction-panel .profile-kicker { color: var(--accent); }
 .interaction-panel h2 { margin: 16px 0 10px; font-size: clamp(32px, 4vw, 58px); line-height: .98; letter-spacing: -.05em; }
 .interaction-panel > p { margin-bottom: 26px; color: color-mix(in srgb, var(--profile-bg) 66%, transparent); line-height: 1.6; }
+.effect-choice { width: fit-content; margin: -10px 0 22px; padding: 7px 11px; border-radius: 999px; display: flex; align-items: center; gap: 7px; background: color-mix(in srgb, var(--accent) 14%, transparent); color: var(--accent); font: 800 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.effect-choice span { font-size: 16px; }
 .profile-interaction { width: 100%; min-height: 54px; padding: 0 17px; border: 0; border-radius: 13px; display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--profile-bg); color: var(--profile-ink); font-weight: 850; cursor: pointer; box-shadow: 0 6px 0 var(--accent); transform: translateY(-3px); transition: transform 120ms ease, box-shadow 120ms ease; }
 .profile-interaction:hover { transform: translateY(-5px); box-shadow: 0 8px 0 var(--accent); }
 .profile-interaction:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent); }
@@ -765,9 +784,11 @@ button { color: inherit; }
 .template-studio .profile-overview { background: linear-gradient(100deg, var(--profile-bg) 0 66%, var(--accent) 66% 100%); }
 .template-studio .profile-watermark { border-color: var(--profile-ink); background: var(--accent); }
 
-.cursor-glow { position: absolute; width: 180px; height: 180px; border-radius: 50%; pointer-events: none; z-index: 1; transform: translate(-50%, -50%); background: radial-gradient(circle, color-mix(in srgb, var(--accent) 42%, transparent), transparent 68%); mix-blend-mode: screen; }
-.confetti-piece { position: fixed; z-index: 20; width: 9px; height: 16px; pointer-events: none; background: var(--accent); animation: confettiFly 850ms cubic-bezier(.1,.7,.2,1) forwards; }
-@keyframes confettiFly { to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; } }
+.confetti-piece, .star-piece { position: absolute; z-index: 20; pointer-events: none; animation: effectFly 850ms cubic-bezier(.1,.7,.2,1) forwards; }
+.confetti-piece { width: 9px; height: 19px; border-radius: 999px; background: var(--accent); }
+.confetti-piece.light-piece { background: color-mix(in srgb, var(--accent) 42%, white); }
+.star-piece { color: var(--accent); font: 900 24px/1 ui-monospace, SFMono-Regular, Menlo, monospace; text-shadow: 0 0 12px color-mix(in srgb, var(--accent) 72%, transparent); }
+@keyframes effectFly { 70% { opacity: 1; } to { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(.25); opacity: 0; } }
 .secret-message { margin-top: 16px; padding: 15px 18px; max-width: 620px; border-left: 5px solid var(--accent); background: color-mix(in srgb, var(--accent) 15%, transparent); font-weight: 700; animation: revealMessage 300ms ease both; }
 @keyframes revealMessage { from { opacity: 0; transform: translateY(9px); } }
 @keyframes profileCopyIn { from { opacity: 0; transform: translateY(28px); } }
@@ -817,9 +838,11 @@ button { color: inherit; }
   .profile-copy { align-self: center; }
   .profile-playground { padding: 96px 22px 96px; grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
   .profile-monogram { align-self: center; font-size: clamp(250px, 78vw, 470px); }
-  .interaction-panel { width: min(100%, 520px); justify-self: end; padding: 19px 20px; }
+  .effect-decoration { inset: 68px 0 84px; }
+  .interaction-panel { width: min(100%, 520px); justify-self: end; max-height: 42vh; overflow-y: auto; padding: 19px 20px; }
   .interaction-panel h2 { font-size: 34px; }
   .interaction-panel > p { margin-bottom: 18px; }
+  .effect-choice { margin-bottom: 17px; }
   .personal-page-nav { bottom: 12px; width: calc(100vw - 24px); }
   .personal-page-nav button span { display: none; }
 }

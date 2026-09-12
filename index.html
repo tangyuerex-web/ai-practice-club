@@ -98,35 +98,31 @@
               <div class="section-heading">
                 <span class="section-number">03</span>
                 <div>
-                  <span class="question-label" data-i18n="questionFive">QUESTION 5</span>
-                  <h2 data-i18n="interactionTitle">How should visitors interact?</h2>
-                  <p data-i18n="interactionIntro">Choose one small effect that gives your page personality.</p>
+                  <span class="question-label" data-i18n="questionFiveSix">QUESTIONS 5–6</span>
+                  <h2 data-i18n="interactionTitle">Add one more detail.</h2>
+                  <p data-i18n="interactionIntro">Share something extra, then choose how the page responds to touch.</p>
                 </div>
               </div>
+              <div class="subquestion-label"><span>01</span><strong data-i18n="extraQuestion">What else should visitors know?</strong></div>
+              <label class="secret-field" id="secret-field">
+                <span data-i18n="secretLabel">Supplementary information</span>
+                <input id="secret" name="secret" type="text" maxlength="80" required placeholder="One thing people might not know about me..." data-i18n-placeholder="secretPlaceholder" />
+              </label>
+              <div class="subquestion-label effect-question"><span>02</span><strong data-i18n="effectQuestion">Choose a touch effect</strong></div>
               <div class="interaction-cards" role="radiogroup" aria-label="Interactive feature" data-i18n-aria="interactionAria">
                 <label class="interaction-card active">
                   <input type="radio" name="interaction" value="glow" checked />
                   <span class="interaction-icon glow-icon" aria-hidden="true"></span>
-                  <strong data-i18n="glowTitle">Cursor glow</strong>
-                  <small data-i18n="glowIntro">A soft glow follows the pointer</small>
+                  <strong data-i18n="glowTitle">Touch stars</strong>
+                  <small data-i18n="glowIntro">Taps release tiny stars</small>
                 </label>
                 <label class="interaction-card">
                   <input type="radio" name="interaction" value="confetti" />
-                  <span class="interaction-icon confetti-icon" aria-hidden="true">✦</span>
-                  <strong data-i18n="confettiTitle">Click confetti</strong>
-                  <small data-i18n="confettiIntro">Clicks release colorful fragments</small>
-                </label>
-                <label class="interaction-card">
-                  <input type="radio" name="interaction" value="reveal" />
-                  <span class="interaction-icon reveal-icon" aria-hidden="true">+</span>
-                  <strong data-i18n="revealTitle">Hidden message</strong>
-                  <small data-i18n="revealIntro">A button reveals one personal detail</small>
+                  <span class="interaction-icon confetti-icon" aria-hidden="true">〰</span>
+                  <strong data-i18n="confettiTitle">Touch ribbons</strong>
+                  <small data-i18n="confettiIntro">Taps release colorful ribbons</small>
                 </label>
               </div>
-              <label class="secret-field" id="secret-field" hidden>
-                <span data-i18n="secretLabel">What should the hidden message say?</span>
-                <input id="secret" name="secret" type="text" maxlength="80" value="I am learning how to turn AI into real work." />
-              </label>
             </section>
 
             <section class="control-section wizard-step review-step" data-step="3">
@@ -147,7 +143,7 @@
                 </div>
                 <div class="review-choice">
                   <i id="review-color"></i>
-                  <span id="review-interaction">Cursor glow</span>
+                  <span id="review-interaction">Touch stars</span>
                 </div>
               </div>
               <button class="publish-button three-d-button" type="submit">

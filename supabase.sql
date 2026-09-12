@@ -4,6 +4,7 @@ create table if not exists public.profiles (
   title text not null check (char_length(title) between 1 and 48),
   bio text not null check (char_length(bio) between 1 and 180),
   accent_color text not null check (accent_color ~ '^#[0-9A-Fa-f]{6}$'),
+  -- glow is retained as the stored value for the star effect so existing links remain compatible.
   interaction text not null check (interaction in ('glow', 'confetti', 'reveal')),
   secret_text text not null default '' check (char_length(secret_text) <= 80),
   template_id text not null check (template_id in ('orbit', 'blueprint', 'studio')),

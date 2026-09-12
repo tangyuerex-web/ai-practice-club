@@ -21,15 +21,16 @@
       aboutLabel: "ABOUT ME",
       knowMore: "Know more about me",
       playLabel: "PLAYGROUND",
-      interactionTitle: "Try something small.",
-      interactionIntro: "Follow the prompt below. This page responds to you.",
+      interactionTitle: "Click to see more.",
+      interactionIntro: "This space responds with the effect I chose.",
       backToProfile: "Back to profile",
       pageSliderAria: "Personal page navigation",
-      glow: "Move your pointer",
-      glowActive: "The glow is following you ✦",
-      confetti: "Click anywhere to try it",
-      reveal: "Reveal a hidden message",
-      revealed: "Message revealed ✓",
+      stars: "Tap for stars",
+      ribbons: "Tap for ribbons",
+      starsHint: "Tap the button or anywhere on this page to release tiny stars.",
+      ribbonsHint: "Tap the button or anywhere on this page to release colorful ribbons.",
+      clickToSee: "Click to see more",
+      revealed: "More about me ✓",
       defaultSecret: "Welcome to my personal website.",
       createMine: "Create my personal website →",
       notFoundTitle: "Page not found",
@@ -49,15 +50,16 @@
       aboutLabel: "关于我",
       knowMore: "进一步了解我",
       playLabel: "互动空间",
-      interactionTitle: "来试一个小互动。",
-      interactionIntro: "按照下方提示操作，这个页面会回应你。",
+      interactionTitle: "点击了解更多。",
+      interactionIntro: "这个空间会用我选择的效果回应你。",
       backToProfile: "返回个人资料",
       pageSliderAria: "个人主页分页导航",
-      glow: "移动你的指针",
-      glowActive: "光点正在跟随你 ✦",
-      confetti: "点击任意位置试试看",
-      reveal: "揭晓一条隐藏留言",
-      revealed: "隐藏留言已揭晓 ✓",
+      stars: "触碰释放星星",
+      ribbons: "触碰释放彩带",
+      starsHint: "触碰按钮或页面任意位置，就会出现小星星。",
+      ribbonsHint: "触碰按钮或页面任意位置，就会出现彩色飘带。",
+      clickToSee: "点击了解更多",
+      revealed: "更多信息已显示 ✓",
       defaultSecret: "欢迎来到我的个人网页。",
       createMine: "创建我的个人网页 →",
       notFoundTitle: "页面没有找到",
@@ -147,10 +149,16 @@
     return rows[0] || null;
   }
 
-  function interactionLabel(kind) {
-    if (kind === "confetti") return t("confetti");
-    if (kind === "reveal") return t("reveal");
-    return t("glow");
+  function effectKind(kind) {
+    return kind === "confetti" ? "ribbons" : "stars";
+  }
+
+  function effectLabel(kind) {
+    return t(effectKind(kind));
+  }
+
+  function effectHint(kind) {
+    return t(`${effectKind(kind)}Hint`);
   }
 
   function goToProfilePage(page) {
@@ -208,7 +216,9 @@
 
     document.title = `${profile.name} · ${t("titleSuffix")}`;
     document.documentElement.style.setProperty("--accent", accent);
-    root.className = `generated-profile template-${template}`;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", accent);
+    const effect = effectKind(profile.interaction);
+    root.className = `generated-profile template-${template} effect-${effect}`;
     root.innerHTML = `
       <header class="profile-top">
         <button class="profile-logo" type="button" data-profile-page="0" aria-label="${t("backToProfile")}"><i>${shortName}</i><span data-field="owner"></span></button>
@@ -227,12 +237,14 @@
             <div class="profile-watermark" aria-hidden="true">${shortName}</div>
           </section>
           <section class="profile-slide profile-playground">
+            <div class="effect-decoration" aria-hidden="true">${"<i></i>".repeat(9)}</div>
             <div class="profile-monogram" aria-hidden="true">${shortName}</div>
             <aside class="interaction-panel">
               <div class="profile-kicker">${t("playLabel")} · 02</div>
               <h2>${t("interactionTitle")}</h2>
-              <p>${t("interactionIntro")}</p>
-              <button class="profile-interaction" type="button"><span>✦</span><b>${interactionLabel(profile.interaction)}</b></button>
+              <p>${effectHint(profile.interaction)}</p>
+              <div class="effect-choice"><span aria-hidden="true">${effect === "stars" ? "✦" : "〰"}</span>${effectLabel(profile.interaction)}</div>
+              <button class="profile-interaction" type="button"><span>${effect === "stars" ? "✦" : "〰"}</span><b>${t("clickToSee")}</b></button>
               <div class="secret-slot"></div>
             </aside>
           </section>
@@ -256,47 +268,9 @@
   function activateInteraction(profile) {
     const button = root.querySelector(".profile-interaction");
     const playground = root.querySelector(".profile-playground");
+    const effect = effectKind(profile.interaction);
 
-    if (profile.interaction === "glow") {
-      const glow = document.createElement("div");
-      glow.className = "cursor-glow";
-      glow.hidden = true;
-      playground.append(glow);
-      playground.addEventListener("pointermove", (event) => {
-        const bounds = playground.getBoundingClientRect();
-        glow.hidden = false;
-        glow.style.left = `${event.clientX - bounds.left}px`;
-        glow.style.top = `${event.clientY - bounds.top}px`;
-      });
-      playground.addEventListener("pointerleave", () => { glow.hidden = true; });
-      button.addEventListener("click", () => { button.querySelector("b").textContent = t("glowActive"); });
-      return;
-    }
-
-    if (profile.interaction === "confetti") {
-      const burst = (event) => {
-        const x = event.clientX ?? window.innerWidth / 2;
-        const y = event.clientY ?? window.innerHeight / 2;
-        for (let index = 0; index < 16; index += 1) {
-          const piece = document.createElement("i");
-          const angle = (Math.PI * 2 * index) / 16;
-          const distance = 70 + Math.random() * 110;
-          piece.className = "confetti-piece";
-          piece.style.left = `${x}px`;
-          piece.style.top = `${y}px`;
-          piece.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
-          piece.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
-          piece.style.setProperty("--rot", `${180 + Math.random() * 540}deg`);
-          if (index % 3 === 0) piece.style.background = "white";
-          document.body.append(piece);
-          piece.addEventListener("animationend", () => piece.remove(), { once: true });
-        }
-      };
-      playground.addEventListener("click", burst);
-      return;
-    }
-
-    button.addEventListener("click", () => {
+    const revealInformation = () => {
       const slot = root.querySelector(".secret-slot");
       if (slot.firstChild) return;
       const message = document.createElement("div");
@@ -304,7 +278,34 @@
       message.textContent = profile.secret_text || t("defaultSecret");
       slot.append(message);
       button.querySelector("b").textContent = t("revealed");
-    });
+    };
+
+    const burst = (event) => {
+      const bounds = playground.getBoundingClientRect();
+      const fallback = button.getBoundingClientRect();
+      const hasPointerCoordinates = event.detail !== 0 && Number.isFinite(event.clientX) && Number.isFinite(event.clientY);
+      const x = hasPointerCoordinates ? event.clientX - bounds.left : fallback.left + fallback.width / 2 - bounds.left;
+      const y = hasPointerCoordinates ? event.clientY - bounds.top : fallback.top + fallback.height / 2 - bounds.top;
+      const total = effect === "stars" ? 12 : 16;
+      for (let index = 0; index < total; index += 1) {
+        const piece = document.createElement("i");
+        const angle = (Math.PI * 2 * index) / total;
+        const distance = 62 + Math.random() * 110;
+        piece.className = effect === "stars" ? "star-piece" : "confetti-piece";
+        piece.textContent = effect === "stars" ? "✦" : "";
+        piece.style.left = `${x}px`;
+        piece.style.top = `${y}px`;
+        piece.style.setProperty("--dx", `${Math.cos(angle) * distance}px`);
+        piece.style.setProperty("--dy", `${Math.sin(angle) * distance}px`);
+        piece.style.setProperty("--rot", `${180 + Math.random() * 540}deg`);
+        if (effect === "ribbons" && index % 3 === 0) piece.classList.add("light-piece");
+        playground.append(piece);
+        piece.addEventListener("animationend", () => piece.remove(), { once: true });
+      }
+    };
+
+    playground.addEventListener("click", burst);
+    button.addEventListener("click", revealInformation);
   }
 
   async function start() {
