@@ -226,8 +226,10 @@
   };
 
   const localizedDefaults = {
+    name: { en: "Name", zh: "名字" },
     title: { en: "Rex", zh: "小悦" },
-    bio: { en: "Turning ideas into things that actually work.", zh: "把想法做成真正能运行的东西。" }
+    bio: { en: "Turning ideas into things that actually work.", zh: "把想法做成真正能运行的东西。" },
+    secret: { en: "I am learning how to turn AI into real work.", zh: "我正在学习如何把人工智能变成真正的作品。" }
   };
 
   let accent = "#C7FF43";
@@ -236,7 +238,7 @@
   let currentStep = 0;
   let draftTimer = 0;
   let restoringDraft = false;
-  const draftKey = "profile_builder_draft_v3";
+  const draftKey = "profile_builder_draft_v4";
   const stepNameKeys = ["stepIdentity", "stepExpression", "stepInteraction", "stepReview"];
 
   function t(key) {
@@ -250,8 +252,10 @@
 
   function setLanguage(nextLanguage) {
     if (!translations[nextLanguage]) return;
+    translateDefaultInput(nameInput, "name", nextLanguage);
     translateDefaultInput(titleInput, "title", nextLanguage);
     translateDefaultInput(bioInput, "bio", nextLanguage);
+    translateDefaultInput(secretInput, "secret", nextLanguage);
     language = nextLanguage;
     document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
     document.title = t("pageTitle");
@@ -346,7 +350,7 @@
   function saveDraftNow() {
     if (restoringDraft) return;
     try {
-      localStorage.setItem(draftKey, JSON.stringify(draftSnapshot()));
+      sessionStorage.setItem(draftKey, JSON.stringify(draftSnapshot()));
       draftStatus.textContent = t("draftSaved");
       draftStatus.classList.add("saved");
       setTimeout(() => draftStatus.classList.remove("saved"), 650);
@@ -364,7 +368,7 @@
 
   function restoreDraft() {
     try {
-      const saved = JSON.parse(localStorage.getItem(draftKey) || "null");
+      const saved = JSON.parse(sessionStorage.getItem(draftKey) || "null");
       if (!saved || typeof saved !== "object") return;
       restoringDraft = true;
       if (typeof saved.name === "string") nameInput.value = saved.name.slice(0, 32);
@@ -594,6 +598,7 @@
       openSite.href = url;
       $("#result-id").textContent = saved.profile.id;
       demoWarning.hidden = !saved.demo;
+      sessionStorage.removeItem(draftKey);
       overlay.hidden = true;
       resultDialog.showModal();
     } catch (error) {

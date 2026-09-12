@@ -39,7 +39,7 @@
           <div class="wizard-progress-track"><i id="wizard-progress-bar"></i></div>
         </div>
 
-        <form id="builder-form" novalidate>
+        <form id="builder-form" novalidate autocomplete="off">
           <div class="wizard-viewport" id="wizard-viewport">
             <div class="wizard-track" id="wizard-track">
             <section class="control-section wizard-step active" data-step="0">
@@ -53,7 +53,7 @@
               </div>
               <div class="floating-fields">
                 <label class="floating-field">
-                  <input id="name" name="name" type="text" maxlength="32" value="Rex Wang" required />
+                  <input id="name" name="name" type="text" maxlength="32" value="Name" required />
                   <span data-i18n="nameLabel">Name</span>
                 </label>
                 <label class="floating-field">
@@ -106,7 +106,7 @@
               <div class="subquestion-label"><span>01</span><strong data-i18n="extraQuestion">What else should visitors know?</strong></div>
               <label class="secret-field" id="secret-field">
                 <span data-i18n="secretLabel">Supplementary information</span>
-                <input id="secret" name="secret" type="text" maxlength="80" required placeholder="One thing people might not know about me..." data-i18n-placeholder="secretPlaceholder" />
+                <input id="secret" name="secret" type="text" maxlength="80" value="I am learning how to turn AI into real work." required placeholder="One thing people might not know about me..." data-i18n-placeholder="secretPlaceholder" />
               </label>
               <div class="subquestion-label effect-question"><span>02</span><strong data-i18n="effectQuestion">Choose a touch effect</strong></div>
               <div class="interaction-cards" role="radiogroup" aria-label="Interactive feature" data-i18n-aria="interactionAria">

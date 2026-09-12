@@ -219,6 +219,7 @@
     document.querySelector('meta[name="theme-color"]')?.setAttribute("content", accent);
     const effect = effectKind(profile.interaction);
     root.className = `generated-profile template-${template} effect-${effect}`;
+    root.style.setProperty("--accent", accent);
     root.innerHTML = `
       <header class="profile-top">
         <button class="profile-logo" type="button" data-profile-page="0" aria-label="${t("backToProfile")}"><i>${shortName}</i><span data-field="owner"></span></button>
